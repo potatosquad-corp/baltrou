@@ -68,7 +68,6 @@ export async function processUser(user: User) {
 		// Publier sur l'eventBus de l'utilisateur
 		const eventBusChannel = `event:${id}`;
 		eventBus.emit(eventBusChannel, payload);
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} catch (err: any) {
 		// Si le refresh token est invalide ou l'utilisateur a révoqué l'accès
 		console.error(`[CRON] Échec du traitement de ${user_login}: ${err.message}`);

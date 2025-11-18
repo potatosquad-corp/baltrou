@@ -2,7 +2,7 @@ import { processUser } from '$lib/server/cron.js';
 import eventBus from '$lib/server/event-bus';
 import { ircManager } from '$lib/server/irc.js';
 import { getUser } from '$lib/server/user.js';
-import { error } from '@sveltejs/kit';
+import { error, json } from '@sveltejs/kit';
 
 /**
  * Ce handler GET gère la connexion Server-Sent Events (SSE).
@@ -53,4 +53,18 @@ export async function GET({ cookies }) {
 			Connection: 'keep-alive' // Maintient la connexion
 		}
 	});
+}
+
+export async function POST({ request, cookies}) {
+	const userId = cookies.get('user_id');
+
+	// Si aucun cookie, l'utilisateur n'est pas autorisé.
+	if (!userId) {
+		throw error(401, 'Non autorisé');
+	}
+	const channel = `event:${userId}`;
+	const payload = await request.json()
+	eventBus.emit(channel,payload);
+
+	return json({});
 }

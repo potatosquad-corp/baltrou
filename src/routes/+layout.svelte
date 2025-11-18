@@ -2,9 +2,10 @@
 	import favicon from '$lib/assets/favicon.svg';
 	import DebugPanel from '$lib/components/debug/DebugPanel.svelte';
 	import Footer from '$lib/components/Footer.svelte';
+	import ToastComponent from '$lib/components/ToastComponent.svelte';
 	import { auth } from '$lib/stores/auth-store.js';
 	import { chat } from '$lib/stores/chat-store.js';
-	import { connectObs, obsConnectionStatus } from '$lib/stores/obs-store.js';
+	import { connectObs, obsState } from '$lib/stores/obs-store.js';
 	import { stats } from '$lib/stores/stats-store.js';
 	import { onMount } from 'svelte';
 
@@ -13,7 +14,7 @@
 		$auth = data.isLoggedIn;
 		$chat;
 		$stats;
-		$obsConnectionStatus;
+		$obsState;
 		connectObs();
 	});
 </script>
@@ -21,7 +22,7 @@
 <svelte:head>
 	<link rel="icon" href={favicon} />
 </svelte:head>
-
+<ToastComponent/>
 <header>
 	<nav>
 		<a href="/">Accueil</a>
@@ -30,7 +31,7 @@
 				<a href="/community">Communauté</a>
 				<a href="/stats">Statistiques</a>
 				<a href="/ambiance">Ambiance</a>
-				{#if $obsConnectionStatus == 'CONNECTED'}
+				{#if $obsState.status == 'CONNECTED'}
 					<a href="/controls">Contrôles</a>
 				{/if}
 				<a href="/settings">Réglages</a>

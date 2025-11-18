@@ -1,4 +1,5 @@
 <script lang="ts">
+	import LightSettings from '$lib/components/LightSettings.svelte';
   import ObsSettings from '$lib/components/ObsSettings.svelte';
 </script>
 
@@ -13,6 +14,7 @@
 -->
 <div class="page-container">
   <ObsSettings />
+  <LightSettings/>
 </div>
 
 <style>

@@ -23,7 +23,6 @@ export async function GET({ cookies }: RequestEvent) {
     // 4. Renvoyer les données au format JSON
     return json(viewerHistory);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     console.error("Erreur lors de la lecture de l'historique des viewers:", err);
     throw error(500, `Erreur interne du serveur: ${err.message}`);

@@ -48,7 +48,6 @@ export async function POST({ request, cookies }: RequestEvent) {
 		// "optimistiquement" (côté client) dès que l'utilisateur
 		// appuie sur "Envoyer".
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} catch (err: any) {
 		console.error('[API Chat POST] Erreur:', err);
 		if (err.status) throw err; // Transférer les erreurs 'error()'

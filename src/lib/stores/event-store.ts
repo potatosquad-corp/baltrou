@@ -1,4 +1,4 @@
-import { readable } from 'svelte/store';
+import { writable } from 'svelte/store';
 
 /**
  * Interface de base pour tous les événements transitant par notre SSE.
@@ -6,7 +6,6 @@ import { readable } from 'svelte/store';
  */
 export type SseEvent = {
   type: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
 };
 
@@ -14,7 +13,7 @@ export type SseEvent = {
  * Un Svelte Store 'readable' qui gère la connexion SSE globale
  * pour l'application.
  */
-export const events = readable<SseEvent | null>(null, (set) => {
+export const events = writable<SseEvent>({type:"",data:null}, (set) => {
   let eventSource: EventSource | null = null;
 
   /**
