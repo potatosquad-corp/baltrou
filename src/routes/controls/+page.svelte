@@ -1,29 +1,26 @@
 <script lang="ts">
 	import AudioFader from '$lib/components/AudioFader.svelte';
 	import PlayIcon from '$lib/components/icons/PlayIcon.svelte';
-	import RefreshIcon from '$lib/components/icons/RefreshIcon.svelte';
 	import ShortcutButton from '$lib/components/icons/ShortcutButton.svelte';
-	import { getScenes, obsConnectionStatus, obsState, switchScene } from '$lib/stores/obs-store';
-	let loading = false;
-	async function updateState() {
-		loading = true;
-		await getScenes();
-		loading = false;
-	}
+	import { obs } from '$lib/stores/obs';
+	const status = obs.client.status;
+	const activeScene = obs.activeScene;
+	const sceneList = obs.sceneList;
+	const audioSources = obs.audioSources;
 </script>
 
-<h1>Contrôles du Stream <RefreshIcon on:click={updateState} {loading}></RefreshIcon></h1>
-{#if $obsConnectionStatus == 'CONNECTED'}
+<h1>Contrôles du Stream</h1>
+{#if $status == 'CONNECTED'}
 	<div class="controls-grid">
 		<!-- Shortcut Buttons -->
 		<div class="shortcuts">
 			<h2>Scènes</h2>
 			<div class="buttons-grid">
-				{#each $obsState.list as scene}
+				{#each $sceneList as scene}
 					<ShortcutButton
-						name={scene}
-						selected={$obsState.active == scene}
-						on:click={() => switchScene(scene)}
+						name={scene.name}
+						selected={$activeScene == scene}
+						on:click={() => activeScene.switchScene(scene.uuid)}
 					>
 						<PlayIcon slot="icon" />
 					</ShortcutButton>
@@ -37,12 +34,12 @@
 		<div class="shortcuts">
 			<h2>Audio</h2>
 			<div class="faders-grid">
-				{#each $obsState.audioSources as audioSource}
+				{#each $audioSources as audioSource}
 					<AudioFader
-						active={audioSource.inCurrentScene}
+						active={audioSource.active}
 						muted={audioSource.muted}
 						name={audioSource.name}
-						value={audioSource.value}
+						value={audioSource.volume}
 					></AudioFader>
 				{/each}
 			</div>

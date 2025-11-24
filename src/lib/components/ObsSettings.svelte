@@ -1,20 +1,16 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import {
-    loadObsSettings,
-    saveObsSettings,
-    connectObs,
-    disconnectObs,
-    obsState // Utilisation du nouveau 'obsState'
-  } from '$lib/stores/obs-store';
+	import { obs } from '$lib/stores/obs';
+	import { writable } from 'svelte/store';
   
   let host = 'localhost';
   let port = 4455;
   let password = '';
-  let isConnecting = false; // État local pour le feedback immédiat
+  let isConnecting = writable<boolean>(false); 
+  const status = obs.client.status;
 
   onMount(() => {
-    const settings = loadObsSettings();
+    const settings = obs.client.loadSettings();
     if (settings) {
       host = settings.host;
       port = settings.port;
@@ -23,20 +19,22 @@
   });
 
   async function connect() {
-    saveObsSettings({ host, port, password });
-    isConnecting = true;
+    obs.client.saveSettings({host,port,password});
+    isConnecting.set(true);
     try {
-      await connectObs();
+      await obs.client.connect();
     } finally {
-      isConnecting = false;
+      isConnecting.set(false);
     }
   }
 
   function disconnect() {
-    // On efface les credentials pour éviter une reconnexion auto indésirable
-    // (Optionnel, dépend de ton UX souhaitée)
-    saveObsSettings({ host: '', port: 4455, password: '' });
-    disconnectObs();
+    obs.client.disconnect()
+    obs.client.saveSettings({
+      host: '',
+      port: 4455,
+      password: ''
+    });
   }
 
   // Mapping du statut pour la couleur
@@ -45,7 +43,7 @@
     CONNECTING: 'status-connecting',
     CONNECTED: 'status-connected',
     ERROR: 'status-error'
-  }[$obsState.status];
+  }[$status];
 </script>
 
 <!-- Utilisation de la classe globale .card -->
@@ -53,7 +51,7 @@
   <h2>Connexion OBS WebSocket</h2>
 
   <div class="status-box">
-    Statut: <span class="status-text {statusClass}">{$obsState.status}</span>
+    Statut: <span class="status-text {statusClass}">{$status}</span>
   </div>
 
   <!-- Groupe Host / Port sur la même ligne -->
@@ -75,15 +73,15 @@
   </div>
 
   <div class="button-group">
-    {#if $obsState.status === 'CONNECTED'}
+    {#if $status === 'CONNECTED'}
       <button class="btn btn-danger" on:click={disconnect}>Déconnecter</button>
     {:else}
       <button
         class="btn btn-success"
         on:click={connect}
-        disabled={isConnecting || $obsState.status === 'CONNECTING'}
+        disabled={$isConnecting || $status === 'CONNECTING'}
       >
-        {isConnecting || $obsState.status === 'CONNECTING' ? 'Connexion...' : 'Connecter'}
+        {$isConnecting || $status === 'CONNECTING' ? 'Connexion...' : 'Connecter'}
       </button>
     {/if}
   </div>

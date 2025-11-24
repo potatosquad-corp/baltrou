@@ -1,6 +1,7 @@
 import { writable, get, type Writable } from 'svelte/store';
 import { browser } from '$app/environment';
 import OBSWebSocket from 'obs-websocket-js';
+import { replacer } from '$lib/utils';
 
 const obsClient = new OBSWebSocket();
 export type ObsConnectionStatus = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'ERROR';
@@ -38,12 +39,24 @@ async function connect() {
 
 	status.set('CONNECTING');
 	try {
+		listenToConnexionChanges();
 		await obsClient.connect(`ws://${settings.host}:${settings.port}`, settings.password);
-		// L'événement 'Identified' gérera le passage à 'CONNECTED'
 	} catch (err) {
-		console.error('[OBS] Erreur de connexion:', err);
+		console.error(`[OBS] Erreur de connexion: ${JSON.stringify(err, replacer)}`);
 		status.set('ERROR');
 	}
+}
+
+function listenToConnexionChanges() {
+	obsClient.once('Identified', () => {
+		status.set('CONNECTED');
+	});
+	obsClient.once("ConnectionClosed",()=> {
+		status.set('DISCONNECTED')
+	})
+	obsClient.once("ConnectionError",()=> {
+		status.set('ERROR')
+	})
 }
 
 async function disconnect() {
@@ -52,12 +65,12 @@ async function disconnect() {
 }
 
 export type ObsClient = {
-    _client: OBSWebSocket;
-    status: Writable<ObsConnectionStatus>;
-    loadSettings: () => ObsSettings | null;
-    saveSettings: (settings: ObsSettings) => void;
-    connect: () => Promise<void>;
-    disconnect: () => Promise<void>;
+	_client: OBSWebSocket;
+	status: Writable<ObsConnectionStatus>;
+	loadSettings: () => ObsSettings | null;
+	saveSettings: (settings: ObsSettings) => void;
+	connect: () => Promise<void>;
+	disconnect: () => Promise<void>;
 };
 
 export function createObsClient() {
@@ -67,7 +80,6 @@ export function createObsClient() {
 		loadSettings,
 		saveSettings,
 		connect,
-		disconnect,
-
+		disconnect
 	};
 }

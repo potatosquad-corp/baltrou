@@ -9,14 +9,15 @@
 	import { stats } from '$lib/stores/stats-store.js';
 	import { onMount } from 'svelte';
 	import '../app.css';
+	import { obs } from '$lib/stores/obs';
 
 	let { data, children } = $props();
+	const status = obs.client.status;
 	onMount(async () => {
 		$auth = data.isLoggedIn;
 		$chat;
 		$stats;
-		$obsState;
-		connectObs();
+		obs.init();
 	});
 </script>
 
@@ -33,7 +34,7 @@
 				<a href="/community">Communauté</a>
 				<a href="/stats">Statistiques</a>
 				<a href="/ambiance">Ambiance</a>
-				{#if $obsState.status == 'CONNECTED'}
+				{#if $status == 'CONNECTED'}
 					<a href="/controls">Contrôles</a>
 				{/if}
 				<a href="/settings">Réglages</a>

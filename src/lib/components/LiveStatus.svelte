@@ -1,17 +1,18 @@
 <script>
 	import { stats } from '$lib/stores/stats-store';
-	import { obsConnectionStatus } from '$lib/stores/obs-store';
+	import { obs } from '$lib/stores/obs';
+	const status = obs.client.status;
 </script>
 
 {#if $stats.isLive}
 	<div class="live-status-container live">
-		<span>OBS: {$obsConnectionStatus}</span>
+		<span>OBS: {$status}</span>
 		<span>Twitch: En direct</span>
 		<div class="live-dot"></div>
 	</div>
 {:else}
 	<div class="live-status-container offline">
-		<span>OBS: {$obsConnectionStatus}</span>
+		<span>OBS: {$status}</span>
 		<span>Twitch: Hors ligne</span>
 		<div class="offline-dot"></div>
 	</div>

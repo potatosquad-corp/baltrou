@@ -69,6 +69,10 @@ body {
 	color: var(--text-primary);
 }
 
+.card.center {
+	text-align: center;
+}
+
 /* --- BUTTONS --- */
 .btn {
 	display: inline-flex;

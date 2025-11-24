@@ -22,6 +22,9 @@
         border-radius: 8px;
         padding: 1rem;
         height: 100px;
+        max-width: 300px;
+        width: 100%;
+        justify-self: center;
         cursor: pointer;
         transition: background-color 0.2s;
         border: 2px solid transparent;

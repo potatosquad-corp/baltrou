@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { writable, get } from 'svelte/store';
 import OBSWebSocket, { EventSubscription } from 'obs-websocket-js';
 import { events } from './event-store'; // Pour le "pont" SSE

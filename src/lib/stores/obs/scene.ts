@@ -1,32 +1,55 @@
 import { get, writable } from 'svelte/store';
 import type { ObsClient } from './client';
+import { browser } from '$app/environment';
 
 export type Scene = {
-  uuid: string,
-  name: string,
+	uuid: string;
+	name: string;
 };
 
 export function createSceneModule(client: ObsClient) {
 	const sceneList = writable<Scene[]>([]);
 	const activeScene = writable<Scene | undefined>(undefined);
 
-	async function switchScene(sceneName: string) {
+	async function switchScene(sceneUuid: string) {
 		if (get(client.status) != 'CONNECTED') return;
 		try {
-			await client._client.call('SetCurrentProgramScene', { sceneName });
+			await client._client.call('SetCurrentProgramScene', { sceneUuid });
 		} catch (err) {
 			console.error(`[OBS] Erreur SetCurrentProgramScene:`, err);
 		}
 	}
 
-  async function hydrate() {
+	async function hydrate() {
 		if (get(client.status) != 'CONNECTED') return;
-    const { scenes } = await client._client.call('GetSceneList');
-    sceneList.set(scenes.map((scene: any) => ({
-      name: scene.sceneName,
-      uuid: scene.sceneUuid,
-    })))
-  }
+		const { scenes, currentProgramSceneUuid } = await client._client.call('GetSceneList');
+		sceneList.set(
+			scenes.map((scene: any) => ({
+				name: scene.sceneName,
+				uuid: scene.sceneUuid
+			}))
+		);
+
+		const currentScene =
+			get(sceneList).find((scene) => scene.uuid == currentProgramSceneUuid) || undefined;
+		activeScene.set(currentScene);
+		console.info(`[OBS] Hydrated scenes, got ${get(sceneList).length} scenes`);
+	}
+
+	if (browser) {
+		client._client.on('CurrentProgramSceneChanged', (scene) => {
+			activeScene.set({ name: scene.sceneName, uuid: scene.sceneUuid });
+		});
+
+		client._client.on('SceneListChanged', (data) => {
+			sceneList.set(
+				data.scenes.map((scene: any) => ({
+					name: scene.sceneName,
+					uuid: scene.sceneUuid
+				}))
+			);
+		});
+	}
 
 	return {
 		sceneModule: {
@@ -38,6 +61,6 @@ export function createSceneModule(client: ObsClient) {
 				switchScene
 			}
 		},
-    hydrateScenes:hydrate
+		hydrateScenes: hydrate
 	};
 }

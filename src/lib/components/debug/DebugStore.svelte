@@ -8,24 +8,19 @@
 	import { chat } from '$lib/stores/chat-store';
 	import { stats } from '$lib/stores/stats-store';
 	import { obsConnectionStatus,obsState } from '$lib/stores/obs-store';
+	import { obs } from '$lib/stores/obs';
+	import { replacer } from '$lib/utils';
 
-	/**
-	 * Une fonction 'replacer' pour JSON.stringify
-	 * pour gérer les types de données complexes (ex: Map, Set)
-	 * et éviter les références circulaires.
-	 */
-	function replacer(key: string, value: any) {
-		if (value instanceof Map) {
-			return { _type: 'Map', data: Array.from(value.entries()) };
-		}
-		if (value instanceof Set) {
-			return { _type: 'Set', data: Array.from(value.values()) };
-		}
-		return value;
-	}
+	
 </script>
 
 <div class="debug-store-tab">
+	<!-- Store: OBS store -->
+	<div class="store-display">
+		<h3>OBS (OBS store)</h3>
+		<pre>{obs.stringify()}</pre>
+	</div>
+
 	<!-- Store: OBS store -->
 	<div class="store-display">
 		<h3>obsConnectionStatus (OBS store)</h3>
