@@ -18,7 +18,7 @@ export const updateStoreItem = <T extends { uuid: string }>(
  * pour gérer les types de données complexes (ex: Map, Set)
  * et éviter les références circulaires.
  */
-export function replacer(key: string, value: any) {
+export function jsonReplacer(key: string, value: any) {
 	if (value instanceof Map) {
 		return { _type: 'Map', data: Array.from(value.entries()) };
 	}

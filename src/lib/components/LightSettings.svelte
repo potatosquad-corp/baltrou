@@ -14,7 +14,7 @@
 	<h1>Connexion API Lumières</h1>
 
 	<div class="status-box">
-		Statut: <span class="status-text {statusClass}">{$lightApiStatus}</span>
+		Statut <span class="status-text {statusClass}">{$lightApiStatus}</span>
 	</div>
 
 	<div class="form-group">

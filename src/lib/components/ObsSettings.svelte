@@ -2,12 +2,14 @@
   import { onMount } from 'svelte';
 	import { obs } from '$lib/stores/obs';
 	import { writable } from 'svelte/store';
+	import { classMap, ConnectionStatus, statusNameMap } from '$lib/types/status';
   
   let host = 'localhost';
   let port = 4455;
   let password = '';
   let isConnecting = writable<boolean>(false); 
   const status = obs.client.status;
+  const isConnected = obs.client.isConnected;
 
   onMount(() => {
     const settings = obs.client.loadSettings();
@@ -38,12 +40,7 @@
   }
 
   // Mapping du statut pour la couleur
-  $: statusClass = {
-    DISCONNECTED: 'status-disconnected',
-    CONNECTING: 'status-connecting',
-    CONNECTED: 'status-connected',
-    ERROR: 'status-error'
-  }[$status];
+  $: statusClass = classMap[$status] || 'status-disconnected';
 </script>
 
 <!-- Utilisation de la classe globale .card -->
@@ -51,7 +48,7 @@
   <h2>Connexion OBS WebSocket</h2>
 
   <div class="status-box">
-    Statut: <span class="status-text {statusClass}">{$status}</span>
+    Statut <span class="status-text {statusClass}">{statusNameMap[$status] || 'Erreur ?'}</span>
   </div>
 
   <!-- Groupe Host / Port sur la même ligne -->
@@ -73,15 +70,15 @@
   </div>
 
   <div class="button-group">
-    {#if $status === 'CONNECTED'}
+    {#if $isConnected}
       <button class="btn btn-danger" on:click={disconnect}>Déconnecter</button>
     {:else}
       <button
         class="btn btn-success"
         on:click={connect}
-        disabled={$isConnecting || $status === 'CONNECTING'}
+        disabled={$isConnecting || $status === ConnectionStatus.CONNECTING}
       >
-        {$isConnecting || $status === 'CONNECTING' ? 'Connexion...' : 'Connecter'}
+        {$isConnecting || $status === ConnectionStatus.CONNECTING ? 'Connexion...' : 'Connecter'}
       </button>
     {/if}
   </div>

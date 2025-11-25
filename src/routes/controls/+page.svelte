@@ -3,14 +3,14 @@
 	import PlayIcon from '$lib/components/icons/PlayIcon.svelte';
 	import ShortcutButton from '$lib/components/icons/ShortcutButton.svelte';
 	import { obs } from '$lib/stores/obs';
-	const status = obs.client.status;
+	const isConnected = obs.client.isConnected;
 	const activeScene = obs.activeScene;
 	const sceneList = obs.sceneList;
 	const audioSources = obs.audioSources;
 </script>
 
 <h1>Contrôles du Stream</h1>
-{#if $status == 'CONNECTED'}
+{#if $isConnected}
 	<div class="controls-grid">
 		<!-- Shortcut Buttons -->
 		<div class="shortcuts">
@@ -19,7 +19,7 @@
 				{#each $sceneList as scene}
 					<ShortcutButton
 						name={scene.name}
-						selected={$activeScene == scene}
+						selected={$activeScene?.uuid == scene.uuid}
 						on:click={() => activeScene.switchScene(scene.uuid)}
 					>
 						<PlayIcon slot="icon" />
@@ -39,7 +39,8 @@
 						active={audioSource.active}
 						muted={audioSource.muted}
 						name={audioSource.name}
-						value={audioSource.volume}
+						volumePercentage={audioSource.volume}
+						uuid={audioSource.uuid}
 					></AudioFader>
 				{/each}
 			</div>

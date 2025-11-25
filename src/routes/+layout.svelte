@@ -5,11 +5,11 @@
 	import ToastContainer from '$lib/components/ToastContainer.svelte';
 	import { auth } from '$lib/stores/auth-store.js';
 	import { chat } from '$lib/stores/chat-store.js';
-	import { connectObs, obsState } from '$lib/stores/obs-store.js';
 	import { stats } from '$lib/stores/stats-store.js';
 	import { onMount } from 'svelte';
 	import '../app.css';
 	import { obs } from '$lib/stores/obs';
+	import { ConnectionStatus } from '$lib/types/status';
 
 	let { data, children } = $props();
 	const status = obs.client.status;
@@ -25,7 +25,7 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<ToastContainer/>
+<ToastContainer />
 <header>
 	<nav>
 		<a href="/">Accueil</a>
@@ -34,9 +34,10 @@
 				<a href="/community">Communauté</a>
 				<a href="/stats">Statistiques</a>
 				<a href="/ambiance">Ambiance</a>
-				{#if $status == 'CONNECTED'}
+				{#if $status == ConnectionStatus.CONNECTED}
 					<a href="/controls">Contrôles</a>
 				{/if}
+				<a href="/soundboard">Soundboard</a>
 				<a href="/settings">Réglages</a>
 				<!-- 
 				<a href="/annonces">Annonces</a>

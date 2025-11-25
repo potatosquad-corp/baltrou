@@ -6,6 +6,7 @@ import { writable } from 'svelte/store';
  */
 export type SseEvent = {
   type: string;
+  timestamp: Date;
   data: any;
 };
 
@@ -13,7 +14,7 @@ export type SseEvent = {
  * Un Svelte Store 'readable' qui gère la connexion SSE globale
  * pour l'application.
  */
-export const events = writable<SseEvent>({type:"",data:null}, (set) => {
+export const events = writable<SseEvent>({type:"empty",data:null, timestamp:new Date()}, (set) => {
   let eventSource: EventSource | null = null;
 
   /**
@@ -54,7 +55,8 @@ export const events = writable<SseEvent>({type:"",data:null}, (set) => {
         // Nous le reformatons en notre type SseEvent standard
         set({
           type: 'connected',
-          data: data
+          data: data,
+          timestamp: new Date()
         });
       } catch {
         console.error('SSE: Échec de l\'analyse de l\'événement "connected"', event.data);
@@ -69,7 +71,8 @@ export const events = writable<SseEvent>({type:"",data:null}, (set) => {
       // On peut émettre un événement d'erreur si on veut
       set({
         type: 'error',
-        data: { message: 'Erreur de connexion SSE' }
+        data: { message: 'Erreur de connexion SSE' },
+        timestamp: new Date()
       });
       // Le navigateur tentera de se reconnecter automatiquement
     };

@@ -1,18 +1,19 @@
 <script lang="ts">
-	import { setInputVolume, toggleInputMute } from '$lib/stores/obs-store';
+	import { obs } from '$lib/stores/obs';
 	import VolumeIcon from './icons/VolumeIcon.svelte';
 	import VolumeOffIcon from './icons/VolumeOffIcon.svelte';
 
 	export let muted = false;
-	export let value = 0;
+	export let volumePercentage = 0;
 	export let name = 'Unnamed';
+	export let uuid:string;
 	export let active = false;
   function toggleMute() {
     muted = !muted
-    toggleInputMute(name);
+		obs.audioSources.toggleMute(uuid);
   }
   function valueChange() {
-    setInputVolume(name,value);
+    obs.audioSources.setVolume(uuid,volumePercentage)
   }
 </script>
 
@@ -20,7 +21,7 @@
 	<div class="fader">
 		<label for={name}>{name}</label>
 		<div class="range-wrapper">
-			<input type="range" oninput={valueChange} bind:value style="--progress-percent: {value}%" />
+			<input type="range" oninput={valueChange} bind:value={volumePercentage} style="--progress-percent: {volumePercentage}%" />
 		</div>
 	</div>
 	<button class="icon-wrapper" onclick={toggleMute} class:muted>

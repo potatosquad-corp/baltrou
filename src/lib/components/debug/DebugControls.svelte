@@ -2,6 +2,7 @@
 	import { asset } from '$app/paths';
 	import { chat } from '$lib/stores/chat-store';
 	import { events } from '$lib/stores/event-store';
+	import { obs } from '$lib/stores/obs';
 	import { toasts } from '$lib/stores/toast-store';
 	import ColorPicker from '../ColorPicker.svelte';
 

@@ -7,44 +7,44 @@
 	import { events } from '$lib/stores/event-store';
 	import { chat } from '$lib/stores/chat-store';
 	import { stats } from '$lib/stores/stats-store';
-	import { obsConnectionStatus,obsState } from '$lib/stores/obs-store';
 	import { obs } from '$lib/stores/obs';
-	import { replacer } from '$lib/utils';
-
-	
+	import { jsonReplacer } from '$lib/utils';
+	import { statusNameMap } from '$lib/types/status';
+	const status = obs.client.status;
+	const sceneList = obs.sceneList;
+	const activeScene = obs.activeScene;
+	const audioSources = obs.audioSources;
 </script>
 
 <div class="debug-store-tab">
 	<!-- Store: OBS store -->
 	<div class="store-display">
-		<h3>OBS (OBS store)</h3>
-		<pre>{obs.stringify()}</pre>
-	</div>
-
-	<!-- Store: OBS store -->
-	<div class="store-display">
-		<h3>obsConnectionStatus (OBS store)</h3>
-		<pre>{JSON.stringify($obsConnectionStatus, replacer, 2)}</pre>
-		<h3>obsScene (OBS store)</h3>
-		<pre>{JSON.stringify($obsState, replacer, 2)}</pre>
+		<h3>Status (OBS store)</h3>
+		<pre>{statusNameMap[$status]}</pre>
+		<h3>SceneList (OBS store)</h3>
+		<pre>{JSON.stringify($sceneList, jsonReplacer, 2)}</pre>
+		<h3>ActiveScene (OBS store)</h3>
+		<pre>{JSON.stringify($activeScene, jsonReplacer, 2)}</pre>
+		<h3>AudioSources (OBS store)</h3>
+		<pre>{JSON.stringify($audioSources, jsonReplacer, 2)}</pre>
 	</div>
 
 	<!-- Store: stats store -->
 	<div class="store-display">
 		<h3>stats (Stats store)</h3>
-		<pre>{JSON.stringify($stats, replacer, 2)}</pre>
+		<pre>{JSON.stringify($stats, jsonReplacer, 2)}</pre>
 	</div>
 
 	<!-- Store: chat store -->
 	<div class="store-display">
 		<h3>chat (Chat Store)</h3>
-		<pre>{JSON.stringify($chat, replacer, 2)}</pre>
+		<pre>{JSON.stringify($chat, jsonReplacer, 2)}</pre>
 	</div>
 
 	<!-- Store: eventStore -->
 	<div class="store-display">
 		<h3>events (Last SSE Event)</h3>
-		<pre>{JSON.stringify($events, replacer, 2)}</pre>
+		<pre>{JSON.stringify($events, jsonReplacer, 2)}</pre>
 	</div>
 </div>
 

@@ -1,8 +1,8 @@
 import { get, writable } from 'svelte/store';
 import type { ObsClient } from './client';
 import { updateStoreItem } from '$lib/utils';
-import { obs } from '.';
 import { browser } from '$app/environment';
+import { obs } from '.';
 
 export type AudioSource = {
 	uuid: string;
@@ -15,7 +15,7 @@ export type AudioSource = {
 export function createAudioModule(client: ObsClient) {
 	const audioSources = writable<AudioSource[]>([]);
 	async function toggleMute(uuid: string) {
-		if (get(client.status) != 'CONNECTED') return;
+		if (!get(client.isConnected)) return;
 		try {
 			const { inputMuted } = await client._client.call('ToggleInputMute', { inputUuid: uuid });
 			updateStoreItem(audioSources, uuid, (i) => ({ ...i, muted: inputMuted }));
@@ -25,7 +25,7 @@ export function createAudioModule(client: ObsClient) {
 	}
 
 	async function setVolume(uuid: string, volume: number) {
-		if (get(client.status) != 'CONNECTED') return;
+		if (!get(client.isConnected)) return;
 		try {
 			const db = volume - 100;
 			await client._client.call('SetInputVolume', { inputUuid: uuid, inputVolumeDb: db });
@@ -36,7 +36,7 @@ export function createAudioModule(client: ObsClient) {
 	}
 
 	async function setActive(uuid: string, active: boolean) {
-		if (get(client.status) != 'CONNECTED') return;
+		if (!get(client.isConnected)) return;
 		try {
 			updateStoreItem(audioSources, uuid, (i) => ({ ...i, active }));
 		} catch (err) {
@@ -45,7 +45,7 @@ export function createAudioModule(client: ObsClient) {
 	}
 
 	async function hydrate() {
-		if (get(client.status) != 'CONNECTED') return;
+		if (!get(client.isConnected)) return;
 		const { inputs } = await client._client.call('GetInputList');
 		const audioInputs: AudioSource[] = inputs
 			.filter(
@@ -62,26 +62,8 @@ export function createAudioModule(client: ObsClient) {
 				volume: 0
 			}));
 		const activeScene = get(obs.activeScene);
-
-		const sourcesInScene = new Set<string>();
-		if (activeScene) {
-			const { sceneItems } = await client._client.call('GetSceneItemList', {
-				sceneUuid: activeScene.uuid
-			});
-			const processSceneItems = async (items: any[]) => {
-				for (const item of items) {
-					if (item.isGroup) {
-						const { sceneItems } = await client._client.call('GetGroupSceneItemList', {
-							sceneName: item.sourceUuid
-						});
-						processSceneItems(sceneItems);
-					} else {
-						sourcesInScene.add(item.sourceUuid);
-					}
-				}
-			};
-			await processSceneItems(sceneItems);
-		}
+		let sourcesInScene = new Set<string>();
+		if (activeScene) sourcesInScene = await getsourcesInScene(activeScene?.uuid);
 		const volumeMap = new Map<string, [number, boolean]>();
 		for (const audioInput of audioInputs) {
 			const { inputVolumeDb } = await client._client.call('GetInputVolume', {
@@ -100,31 +82,47 @@ export function createAudioModule(client: ObsClient) {
 				muted: volumeMap.get(source.uuid)?.[1] || false
 			}))
 		);
-		console.info(`[OBS] Hydrated audio sources, got ${get(audioSources).length} sources`);
+		console.info(`[OBS] Hydrated audio sources, got ${get(audioSources).length} source${get(audioSources).length > 1 ? 's': ''}`);
+	}
+
+	async function getsourcesInScene(sceneUuid: string): Promise<Set<string>> {
+		const sourcesInScene = new Set<string>();
+		const { sceneItems } = await client._client.call('GetSceneItemList', {
+			sceneUuid: sceneUuid
+		});
+		const processSceneItems = async (items: any[]) => {
+			for (const item of items) {
+				if (item.isGroup) {
+					const { sceneItems } = await client._client.call('GetGroupSceneItemList', {
+						sceneName: item.sourceUuid
+					});
+					processSceneItems(sceneItems);
+				} else {
+					sourcesInScene.add(item.sourceUuid);
+				}
+			}
+		};
+		await processSceneItems(sceneItems);
+		return sourcesInScene;
 	}
 
 	if (browser) {
 		client._client.on('CurrentProgramSceneChanged', async (activeScene) => {
-			const sourcesInScene = new Set<string>();
-			const { sceneItems } = await client._client.call('GetSceneItemList', {
-				sceneUuid: activeScene.sceneUuid
-			});
-			const processSceneItems = async (items: any[]) => {
-				for (const item of items) {
-					if (item.isGroup) {
-						const { sceneItems } = await client._client.call('GetGroupSceneItemList', {
-							sceneName: item.sourceUuid
-						});
-						processSceneItems(sceneItems);
-					} else {
-						sourcesInScene.add(item.sourceUuid);
-					}
-				}
-			};
-			await processSceneItems(sceneItems);
+			const sourcesInScene = await getsourcesInScene(activeScene.sceneUuid);
 			audioSources.update((sources) =>
 				sources.map((source) => ({ ...source, active: sourcesInScene.has(source.uuid) }))
 			);
+		});
+
+		client._client.on('InputVolumeChanged', (input) => {
+			updateStoreItem(audioSources, input.inputUuid, (i) => ({
+				...i,
+				volume: input.inputVolumeDb + 100
+			}));
+		});
+
+		client._client.on('InputMuteStateChanged', (input) => {
+			updateStoreItem(audioSources, input.inputUuid, (i) => ({ ...i, muted: input.inputMuted }));
 		});
 	}
 

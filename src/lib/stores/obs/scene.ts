@@ -12,7 +12,7 @@ export function createSceneModule(client: ObsClient) {
 	const activeScene = writable<Scene | undefined>(undefined);
 
 	async function switchScene(sceneUuid: string) {
-		if (get(client.status) != 'CONNECTED') return;
+		if (!get(client.isConnected)) return;
 		try {
 			await client._client.call('SetCurrentProgramScene', { sceneUuid });
 		} catch (err) {
@@ -21,7 +21,7 @@ export function createSceneModule(client: ObsClient) {
 	}
 
 	async function hydrate() {
-		if (get(client.status) != 'CONNECTED') return;
+		if (!get(client.isConnected)) return;
 		const { scenes, currentProgramSceneUuid } = await client._client.call('GetSceneList');
 		sceneList.set(
 			scenes.map((scene: any) => ({
@@ -33,7 +33,7 @@ export function createSceneModule(client: ObsClient) {
 		const currentScene =
 			get(sceneList).find((scene) => scene.uuid == currentProgramSceneUuid) || undefined;
 		activeScene.set(currentScene);
-		console.info(`[OBS] Hydrated scenes, got ${get(sceneList).length} scenes`);
+		console.info(`[OBS] Hydrated scenes, got ${get(sceneList).length} scene${get(sceneList).length > 1 ? 's' : ''}`);
 	}
 
 	if (browser) {
