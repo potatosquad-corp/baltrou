@@ -30,17 +30,24 @@ function saveSettings(settings: ObsSettings) {
 
 async function connect() {
 	const settings = loadSettings();
+	const timeout = new Promise((_, reject) => {
+		setTimeout(() => reject(new Error('timeout succeeded')), 1000 * 5);
+	});
 	if (!settings) {
 		status.set(ConnectionStatus.ERROR);
 		return;
 	}
 
-	if (get(status) === ConnectionStatus.CONNECTED || get(status) === ConnectionStatus.CONNECTING) return;
+	if (get(status) === ConnectionStatus.CONNECTED || get(status) === ConnectionStatus.CONNECTING)
+		return;
 
 	status.set(ConnectionStatus.CONNECTING);
 	try {
 		listenToConnexionChanges();
-		await obsClient.connect(`ws://${settings.host}:${settings.port}`, settings.password);
+		await Promise.race([
+			obsClient.connect(`ws://${settings.host}:${settings.port}`, settings.password),
+			timeout
+		]) 
 	} catch (err) {
 		console.error(`[OBS] Erreur de connexion: ${JSON.stringify(err, jsonReplacer)}`);
 		status.set(ConnectionStatus.ERROR);
@@ -51,12 +58,12 @@ function listenToConnexionChanges() {
 	obsClient.once('Identified', () => {
 		status.set(ConnectionStatus.CONNECTED);
 	});
-	obsClient.once("ConnectionClosed",()=> {
-		status.set(ConnectionStatus.DISCONNECTED)
-	})
-	obsClient.once("ConnectionError",()=> {
-		status.set(ConnectionStatus.ERROR)
-	})
+	obsClient.once('ConnectionClosed', () => {
+		status.set(ConnectionStatus.DISCONNECTED);
+	});
+	obsClient.once('ConnectionError', () => {
+		status.set(ConnectionStatus.ERROR);
+	});
 }
 
 async function disconnect() {
@@ -80,9 +87,9 @@ export function createObsClient() {
 	return {
 		_client: obsClient,
 		status: {
-			subscribe: status.subscribe,
+			subscribe: status.subscribe
 		},
-		isConnected: derived(status,($s)=> $s==ConnectionStatus.CONNECTED),
+		isConnected: derived(status, ($s) => $s == ConnectionStatus.CONNECTED),
 		loadSettings,
 		saveSettings,
 		connect,

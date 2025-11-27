@@ -54,7 +54,7 @@ export async function pingLightApi() {
 	}
 
 	lightApiStatus.set('CONNECTING');
-	console.log(`[Lights API] Ping vers ${url}/api/ping...`);
+	console.log(`[Lights API] Ping vers ${url}/ping...`);
 	const controller = new AbortController();
 	const timeoutId = setTimeout(() => {
 		console.log('[Lights API] Ping timeout.');
@@ -62,7 +62,7 @@ export async function pingLightApi() {
 	}, 5000); // Timeout de 5 secondes (5000 ms)
 
 	try {
-		const response = await fetch(`${url}/api/ping`, {
+		const response = await fetch(`${url}/ping`, {
 			method: 'GET',
 			headers: { Accept: 'application/json' },
 			signal: controller.signal
@@ -75,7 +75,7 @@ export async function pingLightApi() {
 		const data = await response.json();
 
 		// Vérifie la réponse attendue
-		if (data.pong === 'pong') {
+		if (data.pong === true) {
 			console.log('[Lights API] Pong reçu ! Connexion réussie.');
 			lightApiStatus.set('CONNECTED');
 		} else {

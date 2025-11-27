@@ -23,7 +23,7 @@
 		ambiances.forEach(a => a.selected = false);
 		ambiance.selected = true;
     const rgb = hexToRgb(ambiance.color);
-    await fetch(`http://85.68.24.241:2000/api/color/${rgb[0]}/${rgb[1]}/${rgb[2]}`);
+    await fetch(`https://api.foustouille.fr/api/color/${rgb[0]}/${rgb[1]}/${rgb[2]}`);
 	}
 
 	let selectedAmbiance: Ambiance = $derived(ambiances.find(a => a.selected)!);

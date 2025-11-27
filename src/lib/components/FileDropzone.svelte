@@ -31,7 +31,7 @@
 
 		if (accept.length != 0) {
 			const invalidFile = files.find((f) => {
-				return !accept.includes('.'+f.name.split('.').pop() || '');
+				return !accept.includes('.' + f.name.split('.').pop() || '');
 			});
 
 			if (invalidFile) {
@@ -73,6 +73,7 @@
 		const target = e.target as HTMLInputElement;
 		const files = validateFiles(target.files);
 		if (files.length > 0) onfiles?.(files);
+		setTimeout(() => {(status = 'idle')}, 2000);
 	};
 </script>
 
@@ -89,7 +90,14 @@
 	tabindex="0"
 	onkeydown={(e) => e.key === 'Enter' && inputElement.click()}
 >
-	<input type="file" accept={accept.join(", ")} {multiple} hidden bind:this={inputElement} onchange={handleInput} />
+	<input
+		type="file"
+		accept={accept.join(', ')}
+		{multiple}
+		hidden
+		bind:this={inputElement}
+		onchange={handleInput}
+	/>
 
 	<div class="content">
 		{#if status === 'error'}
@@ -102,7 +110,7 @@
 			<span class="icon">📂</span>
 			<p>{label}</p>
 			{#if accept.length != 0}
-				<small class="formats">Formats acceptés {accept.join(" ")}</small>
+				<small class="formats">Formats acceptés {accept.join(' ')}</small>
 			{/if}
 		{/if}
 	</div>

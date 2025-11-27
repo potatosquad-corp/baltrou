@@ -1,38 +1,28 @@
-# sv
+![](/static/banner-transparent.png)
+*Broadcast Asset Live Tool for Real-time Overlay Utility*
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+# How to run
+1. Download nodejs
 
-## Creating a project
+Go check their download page, also install npm and pnpm
 
-If you're seeing this, you've probably already done this step. Congrats!
+2. install packages
 
-```sh
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
+execute the following command
+```bash
+pnpm install --prod
 ```
+3. Add the environnement file
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+Add a file name `.env` which contains
+```bash
+TWITCH_CLIENT_ID="Your application id" #Change this value
+TWITCH_CLIENT_SECRET="your application secret" #Change this value
+TWITCH_SCOPE="chat:read chat:edit user:write:chat user:read:email channel:read:subscriptions bits:read user:read:follows"
 ```
+You can get these values from the twitch developper panel
 
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
+4. Start the app
+```bash
+node build/index.js
 ```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.

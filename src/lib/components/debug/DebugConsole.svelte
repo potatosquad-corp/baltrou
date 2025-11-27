@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { jsonReplacer } from '$lib/utils';
   import { onMount, onDestroy } from 'svelte';
   let consoleElement: HTMLElement;
   interface ConsoleLog {
@@ -88,7 +89,7 @@
       <span class="timestamp">{log.timestamp.toLocaleTimeString()}</span>
       <div class="message">
         {#each log.message as item}
-          <pre>{JSON.stringify(item, null, 2)}</pre>
+          <pre>{JSON.stringify(item, jsonReplacer, 2)}</pre>
         {/each}
       </div>
     </div>

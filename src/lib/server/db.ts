@@ -1,6 +1,7 @@
 import { Low } from 'lowdb';
 import { JSONFile } from 'lowdb/node';
 import type { User } from './user';
+import type { SoundFile } from './soundboard';
 
 type ViewerRecord = {
 	count: number;
@@ -10,10 +11,11 @@ type ViewerRecord = {
 type Schema = {
 	users: User[];
 	viewer_history: ViewerRecord[];
+	sounds: SoundFile[];
 };
 
 const adapter = new JSONFile<Schema>('db.json');
-const defaultData: Schema = { users: [], viewer_history: [] };
+const defaultData: Schema = { users: [], viewer_history: [], sounds: [] };
 export const db = new Low<Schema>(adapter, defaultData);
 
 export async function addViewerRecord(entry: ViewerRecord) {

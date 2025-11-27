@@ -10,6 +10,7 @@
 	import { obs } from '$lib/stores/obs';
 	import { jsonReplacer } from '$lib/utils';
 	import { statusNameMap } from '$lib/types/status';
+	import { soundboardStore } from '$lib/stores/soundboard-store';
 	const status = obs.client.status;
 	const sceneList = obs.sceneList;
 	const activeScene = obs.activeScene;
@@ -28,6 +29,13 @@
 		<h3>AudioSources (OBS store)</h3>
 		<pre>{JSON.stringify($audioSources, jsonReplacer, 2)}</pre>
 	</div>
+
+		<!-- Store: stats store -->
+	<div class="store-display">
+		<h3>sounds (soundboard store)</h3>
+		<pre>{JSON.stringify($soundboardStore, jsonReplacer, 2)}</pre>
+	</div>
+
 
 	<!-- Store: stats store -->
 	<div class="store-display">
