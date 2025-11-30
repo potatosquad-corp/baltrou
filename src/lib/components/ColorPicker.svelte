@@ -1,21 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
-
-  /**
-   * La couleur actuelle au format hexadécimal
-   * @default '#FFFFFF'
-   */
-  export let value = '#FFFFFF';
-
-  const dispatch = createEventDispatcher<{
-    change: string; // Se déclenche quand une nouvelle couleur est choisie
-  }>();
-
-  // Cette fonction est appelée à chaque fois que
-  // l'utilisateur change la couleur dans le sélecteur natif.
-  function onColorInput() {
-    dispatch('change', value);
-  }
+  let { value = $bindable() } = $props();
 </script>
 
 <div class="color-picker-wrapper" title="Sélectionner une couleur">
@@ -37,7 +21,6 @@
     type="color"
     class="color-input"
     bind:value
-    on:input={onColorInput}
   />
 </div>
 

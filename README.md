@@ -12,17 +12,12 @@ execute the following command
 ```bash
 pnpm install --prod
 ```
-3. Add the environnement file
-
-Add a file name `.env` which contains
-```bash
-TWITCH_CLIENT_ID="Your application id" #Change this value
-TWITCH_CLIENT_SECRET="your application secret" #Change this value
-TWITCH_SCOPE="chat:read chat:edit user:write:chat user:read:email channel:read:subscriptions bits:read user:read:follows"
-```
-You can get these values from the twitch developper panel
+3. Configure the env file
+ 
+Edit the `.env` file
+for the twitch variables you can find them in the developper portal.
 
 4. Start the app
 ```bash
-node build/index.js
+pnpm run start
 ```

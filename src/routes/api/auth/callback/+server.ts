@@ -1,4 +1,3 @@
-import { dev } from '$app/environment';
 import { env } from '$env/dynamic/private';
 import { addUser, getTwitchUserInfo, getUser, updateCredentials } from '$lib/server/user';
 import { TwitchApiError } from '$lib/types/twitch.js';
@@ -13,7 +12,7 @@ export async function GET({ url, cookies, fetch }) {
 	const code = url.searchParams.get('code');
 
 	if (!code) {
-		console.error('Missing code in OAuth callback');
+		console.error('[AUTH] Missing code in OAuth callback');
 		throw redirect(302, '/login');
 	}
 
@@ -32,14 +31,14 @@ export async function GET({ url, cookies, fetch }) {
 	});
 
 	if (!tokenResponse.ok) {
-		console.error('Twitch token exchange failed:', await tokenResponse.text());
+		console.error('[AUTH] Twitch token exchange failed:', await tokenResponse.text());
 		throw redirect(302, '/login');
 	}
 
 	const tokenData = await tokenResponse.json();
 	const user = await getTwitchUserInfo(tokenData.access_token);
 	if (!user) {
-		console.error('Failed to fetch twitch user info');
+		console.error('[AUTH] Failed to fetch twitch user info');
 		cookies.delete('user_id', { path: '/' });
 		throw new TwitchApiError(404, 'Could not retreive twitch user info');
 	}
@@ -60,10 +59,10 @@ export async function GET({ url, cookies, fetch }) {
 			}
 		});
 	}
-
+	console.log(`[AUTH] user ${user.id} - ${user.display_name} connected`);
 	cookies.set('user_id', user.id, {
 		path: '/',
-		secure: !dev,
+		secure: false, // TODO find a way to put secure:true when the app will be able to run in https :)
 		httpOnly: true,
 		maxAge: 60 * 60 * 24 * 7
 	});

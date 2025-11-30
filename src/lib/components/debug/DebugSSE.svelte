@@ -12,6 +12,9 @@
       if (status === 'connecting' && event.type != 'empty') {
         status = 'connected';
       }
+			if(event.type == 'error') {
+				status = 'error'
+			}
   
       const logEntry: SseEvent = {
         type: event.type || 'data',

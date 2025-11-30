@@ -63,12 +63,12 @@ jobs:
           pnpm install --frozen-lockfile
           
           # Création d'un .env vide pour satisfaire le build SvelteKit si besoin
-          touch .env
+          cp .env.example .env
           
           pnpm run build
           
           # Création de l'archive pour le déploiement
-          tar -czf release.tar.gz build package.json
+          tar -czf release.tar.gz build package.json .env
 
       # 6. Création de la Release GitHub (Seulement si nouvelle version)
       - name: Create Release

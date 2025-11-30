@@ -66,8 +66,8 @@ export const events = writable<SseEvent>({type:"empty",data:null, timestamp:new 
     /**
      * Gère les erreurs de connexion SSE
      */
-    eventSource.onerror = (err: Event) => {
-      console.error('SSE: Erreur de connexion', err);
+    eventSource.onerror = () => {
+      console.error('SSE: Erreur de connexion');
       // On peut émettre un événement d'erreur si on veut
       set({
         type: 'error',

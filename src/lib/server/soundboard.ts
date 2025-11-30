@@ -91,3 +91,15 @@ export async function deleteUserSound(userId: string, soundId: string) {
 	}
 	await db.write();
 }
+
+
+export async function renameSound(userId:string,soundId:string,newName:string){
+	await db.read();
+	const existingFile = db.data.sounds.find((s) => s.id === soundId && userId in s.userAliases);
+	if (!existingFile) return;
+	const nameWithoutExt = newName.replace(/\.[^/.]+$/, '');
+	const cleanName = nameWithoutExt.replace(/[^a-zA-Z0-9 ]/g, '');
+	existingFile.userAliases[userId] = cleanName;
+	await db.write();
+	return cleanName;
+}

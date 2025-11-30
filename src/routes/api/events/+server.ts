@@ -9,15 +9,18 @@ import { error, json } from '@sveltejs/kit';
  * Il maintient une connexion ouverte avec le client.
  */
 export async function GET({ cookies }) {
+	console.log('[SSE] User is attempting connexion...');
 	const userId = cookies.get('user_id');
 
 	// Si aucun cookie, l'utilisateur n'est pas autorisé.
 	if (!userId) {
+		console.log('[SSE] User is not connected, aborting...');
 		throw error(401, 'Non autorisé');
 	}
 
 	const user = await getUser(userId);
 	if(!user) {
+		console.log('[SSE] User not found, aborting...');
 		throw error(404,"User id not found");
 	}
 
@@ -36,11 +39,11 @@ export async function GET({ cookies }) {
 			await ircManager.joinChannel(userId,user.user_login);
 			await processUser(user);
 
-			console.log(`[SSE] Client ${userId} connecté au SSE.`);
+			console.log(`[SSE] Client ${userId} connected`);
 			controller.enqueue(`event: connected\ndata: {"message": "Connexion SSE établie"}\n\n`);
 		},
 		async cancel() {
-			console.log(`[SSE] Client ${userId} déconnecté du SSE.`);
+			console.log(`[SSE] Client ${userId} disconnected`);
 			eventBus.off(channel, handler);
 			await ircManager.partChannel(userId,user.user_login);
 		}

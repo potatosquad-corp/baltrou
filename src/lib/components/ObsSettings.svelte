@@ -24,7 +24,7 @@
     obs.client.saveSettings({host,port,password});
     isConnecting.set(true);
     try {
-      await obs.client.connect();
+      await obs.init();
     } finally {
       isConnecting.set(false);
     }

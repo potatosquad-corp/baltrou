@@ -69,6 +69,10 @@ body {
 	color: var(--text-primary);
 }
 
+.card.no-margin {
+	margin: 0 !important;
+}
+
 .card.center {
 	text-align: center;
 }
@@ -181,4 +185,22 @@ h3 {
 	display: flex;
 	justify-content: flex-end;
 	margin-top: 2rem;
+}
+
+/* BIG TEXTS */
+.xl-label {
+	font-family: 'Bebas Neue', sans-serif; /* Ta police de titre */
+	font-size: 1.5rem;
+	letter-spacing: 0.05em;
+	margin-bottom: 0.2rem;
+	text-transform: uppercase;
+	opacity: 0.9;
+}
+.xl-text {
+	font-family: 'Bebas Neue', sans-serif; /* Utiliser la même police rend super bien pour l'heure */
+	font-size: 4rem;
+	line-height: 1;
+	font-weight: 400;
+	letter-spacing: 0.02em;
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }

@@ -54,6 +54,10 @@
     toasts.add("Test warning",'warning');
     toasts.add("Test error",'error');
   }
+
+	async function setFullscreen(){
+		await document.body.requestFullscreen();
+	}
 </script>
 
 <div class="debug-controls">
@@ -61,6 +65,7 @@
 	<button class="danger-btn" on:click={clearChatHistory}> Vider l'historique du Chat </button>
 	<button class="danger-btn" on:click={sendDebugSound}>Envoyer le son de débug</button>
 	<button class="danger-btn" on:click={testToast}>Tester les toasts</button>
+	<button class="danger-btn" on:click={setFullscreen}>Mettre en fullscreen</button>
 </div>
 
 <style>
