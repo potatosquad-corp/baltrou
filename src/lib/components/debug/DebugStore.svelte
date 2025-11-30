@@ -11,6 +11,7 @@
 	import { jsonReplacer } from '$lib/utils';
 	import { statusNameMap } from '$lib/types/status';
 	import { soundboardStore } from '$lib/stores/soundboard-store';
+	import { appMode, auth } from '$lib/stores/global-store';
 	const status = obs.client.status;
 	const sceneList = obs.sceneList;
 	const activeScene = obs.activeScene;
@@ -18,6 +19,15 @@
 </script>
 
 <div class="debug-store-tab">
+
+	<!-- Store: Global store -->
+	<div class="store-display">
+		<h3>Auth (Global store)</h3>
+		<pre>{JSON.stringify($auth,jsonReplacer,2)}</pre>
+		<h3>Mode (Global store)</h3>
+		<pre>{JSON.stringify($appMode, jsonReplacer, 2)}</pre>
+	</div> 
+
 	<!-- Store: OBS store -->
 	<div class="store-display">
 		<h3>Status (OBS store)</h3>

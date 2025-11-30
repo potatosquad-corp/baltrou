@@ -3,7 +3,7 @@
 	import DebugPanel from '$lib/components/debug/DebugPanel.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import ToastContainer from '$lib/components/ToastContainer.svelte';
-	import { auth } from '$lib/stores/auth-store.js';
+	import { auth } from '$lib/stores/global-store.js';
 	import { chat } from '$lib/stores/chat-store.js';
 	import { stats } from '$lib/stores/stats-store.js';
 	import { onMount } from 'svelte';

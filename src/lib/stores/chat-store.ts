@@ -60,6 +60,7 @@ events.subscribe((event) => {
 
 		// 'store.update' met à jour la valeur du store
 		chat.update((currentState) => {
+			if(currentState.messages.find((msg)=>newMessage.id == msg.id)) return currentState;
 			const newMessages = [...currentState.messages, newMessage];
 			const updatedMessages = newMessages.slice(-100); // Garde 100 max
 

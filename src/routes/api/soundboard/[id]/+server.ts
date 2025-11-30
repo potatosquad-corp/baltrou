@@ -1,4 +1,4 @@
-import { deleteUserSound, getSound } from '$lib/server/soundboard.js';
+import { deleteUserSound, getSound, renameSound } from '$lib/server/soundboard.js';
 import { error, json } from '@sveltejs/kit';
 import { createReadStream } from 'fs';
 import { stat } from 'fs/promises';
@@ -47,4 +47,16 @@ export async function GET({ params }) {
 	} catch {
 		throw error(404, 'File not found');
 	}
+}
+
+export async function PATCH({params,request, cookies}) {
+	const userId = cookies.get('user_id');
+
+	if (!userId) {
+		throw error(401, 'Non autorisé');
+	}
+
+	const name = (await request.json()).name;
+	const newName = await renameSound(userId,params.id,name);
+	return json({name:newName});
 }
