@@ -3,9 +3,10 @@
 	import { obs } from '$lib/stores/obs';
 	import { writable } from 'svelte/store';
 	import { classMap, ConnectionStatus, statusNameMap } from '$lib/types/status';
+	import { page } from '$app/state';
   
-  let host = 'localhost';
-  let port = 4455;
+  let host = page.url.host;
+  let room = '';
   let password = '';
   let isConnecting = writable<boolean>(false); 
   const status = obs.client.status;
@@ -15,13 +16,13 @@
     const settings = obs.client.loadSettings();
     if (settings) {
       host = settings.host;
-      port = settings.port;
+      room = settings.room;
       password = settings.password || '';
     }
   });
 
   async function connect() {
-    obs.client.saveSettings({host,port,password});
+    obs.client.saveSettings({host,room,password});
     isConnecting.set(true);
     try {
       await obs.init();
@@ -34,7 +35,7 @@
     obs.client.disconnect()
     obs.client.saveSettings({
       host: '',
-      port: 4455,
+      room: '',
       password: ''
     });
   }
@@ -58,9 +59,9 @@
       <input id="obs-host" type="text" bind:value={host} placeholder="localhost" />
     </div>
 
-    <div class="form-group port-group">
-      <label for="obs-port">Port</label>
-      <input id="obs-port" type="number" bind:value={port} placeholder="4455" />
+    <div class="form-group room-group">
+      <label for="obs-room">Room</label>
+      <input id="obs-room" type="text" bind:value={room} placeholder="ABCD" />
     </div>
   </div>
 
@@ -105,7 +106,7 @@
     flex-grow: 1;
   }
 
-  .port-group {
+  .room-group {
     width: 120px; /* Largeur fixe pour le port, plus élégant */
   }
 </style>

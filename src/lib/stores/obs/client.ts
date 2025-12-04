@@ -1,14 +1,13 @@
 import { writable, get, type Readable, derived } from 'svelte/store';
 import { browser } from '$app/environment';
 import OBSWebSocket from 'obs-websocket-js';
-import { jsonReplacer } from '$lib/utils';
 import { ConnectionStatus } from '$lib/types/status';
 
 const obsClient = new OBSWebSocket();
 
 export interface ObsSettings {
 	host: string;
-	port: number;
+	room: string;
 	password?: string;
 }
 
@@ -31,7 +30,7 @@ function saveSettings(settings: ObsSettings) {
 async function connect() {
 	const settings = loadSettings();
 	const timeout = new Promise((_, reject) => {
-		setTimeout(() => reject(new Error('timeout succeeded')), 1000 * 5);
+		setTimeout(() => reject({code: 1000,message:"Connexion timeout"}), 1000 * 50);
 	});
 	if (!settings) {
 		status.set(ConnectionStatus.ERROR);
@@ -45,11 +44,11 @@ async function connect() {
 	try {
 		listenToConnexionChanges();
 		await Promise.race([
-			obsClient.connect(`ws://${settings.host}:${settings.port}`, settings.password),
+			obsClient.connect(`wss://${settings.host}/ws?room=${settings.room}`, settings.password),
 			timeout
 		]) 
 	} catch (err) {
-		console.error(`[OBS] Erreur de connexion: ${JSON.stringify(err, jsonReplacer)}`);
+		console.error(`[OBS] Erreur de connexion:`,err);
 		status.set(ConnectionStatus.ERROR);
 	}
 }
