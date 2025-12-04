@@ -63,7 +63,7 @@ jobs:
           pnpm install --frozen-lockfile
           
           # Création d'un .env vide pour satisfaire le build SvelteKit si besoin
-          cp .env.example .env
+          cp .env.build .env
           
           pnpm run build
           
