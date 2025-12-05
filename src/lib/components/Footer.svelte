@@ -5,12 +5,13 @@
 	import UserIcon from './icons/UserIcon.svelte';
 	import LiveStatus from './LiveStatus.svelte';
 	import { stats } from '$lib/stores/stats-store';
+	import { version } from '$app/environment';
 	export let isLoggedIn: Boolean;
 </script>
 
 <footer>
 	<div class="footer-left">
-		<span>b.a.l.t.r.o.u, powered by Potato corp ❤️</span>
+		<span>b.a.l.t.r.o.u V{version}, powered by Potato corp ❤️</span>
 	</div>
 	{#if isLoggedIn}
 		<div class="footer-center">
