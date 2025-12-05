@@ -1,23 +1,20 @@
-FROM node:lts-slim AS base
-
+FROM node:22-alpine AS builder
+WORKDIR /app
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
-
-FROM base AS prod
-
-RUN mkdir app
-COPY pnpm-lock.yaml /app
-WORKDIR /app
-RUN pnpm fetch --prod
-
-COPY . /app
-RUN cp .env.build .env
+COPY package.json ./
+COPY pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+COPY . .
 RUN pnpm run build
+RUN pnpm prune --prod
 
-FROM base
-COPY --from=prod /app/node_modules /app/node_modules
-COPY --from=prod /app/build /app/build
-COPY --from=prod /app/.env.example /app/.env
-EXPOSE 8000
-CMD [ "pnpm", "start" ]
+FROM node:22-alpine
+WORKDIR /app
+COPY --from=builder /app/build build/
+COPY --from=builder /app/node_modules node_modules/
+COPY package.json .
+EXPOSE 3000
+ENV NODE_ENV=production
+CMD [ "node", "build" ]
