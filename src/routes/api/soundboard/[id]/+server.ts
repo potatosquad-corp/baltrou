@@ -3,15 +3,15 @@ import { error, json } from '@sveltejs/kit';
 import { createReadStream } from 'fs';
 import { stat } from 'fs/promises';
 
-export async function DELETE({params, cookies}) {
-  const userId = cookies.get('user_id');
+export async function DELETE({ params, cookies }) {
+	const userId = cookies.get('user_id');
 
 	if (!userId) {
 		throw error(401, 'Non autorisé');
 	}
 
-  await deleteUserSound(userId,params.id);
-  return json({})
+	await deleteUserSound(userId, params.id);
+	return json({});
 }
 
 export async function GET({ params }) {
@@ -23,11 +23,11 @@ export async function GET({ params }) {
 	try {
 		// Check file stats for Content-Length
 		const stats = await stat(filePath);
-		
+
 		// Create a readable stream
 		const stream = createReadStream(filePath);
-        
-        // Convert Node stream to Web ReadableStream
+
+		// Convert Node stream to Web ReadableStream
 		const readable = new ReadableStream({
 			start(controller) {
 				stream.on('data', (chunk) => controller.enqueue(chunk));
@@ -49,7 +49,7 @@ export async function GET({ params }) {
 	}
 }
 
-export async function PATCH({params,request, cookies}) {
+export async function PATCH({ params, request, cookies }) {
 	const userId = cookies.get('user_id');
 
 	if (!userId) {
@@ -57,6 +57,6 @@ export async function PATCH({params,request, cookies}) {
 	}
 
 	const name = (await request.json()).name;
-	const newName = await renameSound(userId,params.id,name);
-	return json({name:newName});
+	const newName = await renameSound(userId, params.id, name);
+	return json({ name: newName });
 }

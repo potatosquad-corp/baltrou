@@ -16,7 +16,7 @@ export interface TwitchChatResponse {
 	is_sent: boolean;
 }
 export interface TwitchGetStreamsRes {
-	data : {
+	data: {
 		id: string;
 		user_id: string;
 		user_login: string;
@@ -27,5 +27,5 @@ export interface TwitchGetStreamsRes {
 		tags: string;
 		viewer_count: number;
 		started_at: string;
-	}[]
+	}[];
 }

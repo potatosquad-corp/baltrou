@@ -15,7 +15,7 @@
 	});
 
 	// Formatage HH:MM:SS
-	// $derived n'est pas strictement nécessaire ici car time change, 
+	// $derived n'est pas strictement nécessaire ici car time change,
 	// mais on peut le calculer directement dans le template ou via une fonction simple.
 	function formatTime(date: Date) {
 		return date.toLocaleTimeString('fr-FR', {
@@ -37,13 +37,12 @@
 <style>
 	.card {
 		text-align: center;
-		
+
 		/* Largeur min pour éviter que ça bouge quand les chiffres changent */
-		min-width: 300px; 
+		min-width: 300px;
 		display: inline-flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 	}
-
 </style>

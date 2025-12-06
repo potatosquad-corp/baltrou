@@ -9,7 +9,7 @@ export type SoundFile = {
 };
 
 export async function initSoundboardFolder() {
-	const OUT_FOLDER = './files/soundboard';
+	const OUT_FOLDER = './data/soundboard';
 	await mkdir(OUT_FOLDER, { recursive: true });
 }
 
@@ -26,7 +26,7 @@ export async function getUserSounds(userId: string) {
 
 export async function getSound(soundId: string) {
 	await db.read();
-	return db.data.sounds.find(s=>s.id == soundId);
+	return db.data.sounds.find((s) => s.id == soundId);
 }
 
 export async function processAndSaveSound(file: File, userId: string) {
@@ -36,7 +36,7 @@ export async function processAndSaveSound(file: File, userId: string) {
 	const fileHash = createHash('md5').update(fileData).digest('hex');
 
 	const extension = file.name.split('.').pop() || 'mp3';
-	const filePath = `./files/soundboard/${fileHash}.${extension}`;
+	const filePath = `./data/soundboard/${fileHash}.${extension}`;
 
 	try {
 		await stat(filePath);
@@ -84,7 +84,7 @@ export async function deleteUserSound(userId: string, soundId: string) {
 
 	if (!existingFile) return;
 	if (Object.keys(existingFile.userAliases).length === 1) {
-		await rm(`./files/soundboard/${existingFile.id}.${existingFile.extension}`);
+		await rm(`./data/soundboard/${existingFile.id}.${existingFile.extension}`);
 		db.data.sounds = db.data.sounds.filter((s) => s.id !== soundId);
 	} else {
 		delete existingFile.userAliases[userId];
@@ -92,8 +92,7 @@ export async function deleteUserSound(userId: string, soundId: string) {
 	await db.write();
 }
 
-
-export async function renameSound(userId:string,soundId:string,newName:string){
+export async function renameSound(userId: string, soundId: string, newName: string) {
 	await db.read();
 	const existingFile = db.data.sounds.find((s) => s.id === soundId && userId in s.userAliases);
 	if (!existingFile) return;

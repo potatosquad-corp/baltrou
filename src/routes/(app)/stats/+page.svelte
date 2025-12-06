@@ -4,8 +4,9 @@
 	import { chat } from '$lib/stores/chat-store';
 	import { stats } from '$lib/stores/stats-store';
 </script>
+
 <svelte:head>
-  <title>Stats - Baltrou</title>
+	<title>Stats - Baltrou</title>
 </svelte:head>
 <h1>Statistiques du Stream</h1>
 

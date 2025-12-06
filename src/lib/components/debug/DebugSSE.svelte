@@ -6,32 +6,32 @@
 
 	let messages: SseEvent[] = [];
 	let status: ConnexionState = 'connecting';
-  
-  onMount(()=>{
-    return events.subscribe((event) => {
-      if (status === 'connecting' && event.type != 'empty') {
-        status = 'connected';
-      }
-			if(event.type == 'error') {
-				status = 'error'
+
+	onMount(() => {
+		return events.subscribe((event) => {
+			if (status === 'connecting' && event.type != 'empty') {
+				status = 'connected';
 			}
-  
-      const logEntry: SseEvent = {
-        type: event.type || 'data',
-        timestamp: new Date(),
-        data: event.data
-      };
-      messages = [logEntry, ...messages];
-    });
+			if (event.type == 'error') {
+				status = 'error';
+			}
 
-  })
+			const logEntry: SseEvent = {
+				type: event.type || 'data',
+				timestamp: new Date(),
+				data: event.data
+			};
+			messages = [logEntry, ...messages];
+		});
+	});
 
-
-  $: statusClass = ({
-    connecting: 'status-connecting',
-    connected: 'status-connected',
-    error: 'status-error'
-  } as const)[status];
+	$: statusClass = (
+		{
+			connecting: 'status-connecting',
+			connected: 'status-connected',
+			error: 'status-error'
+		} as const
+	)[status];
 </script>
 
 <div class="debug-sse-tab">

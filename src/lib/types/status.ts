@@ -14,7 +14,6 @@ export const statusNameMap: Record<ConnectionStatus, string> = {
 	[ConnectionStatus.ERROR]: 'Erreur'
 };
 
-
 export const classMap: Record<ConnectionStatus, string> = {
 	[ConnectionStatus.DISCONNECTED]: 'status-disconnected',
 	[ConnectionStatus.CONNECTING]: 'status-connecting',

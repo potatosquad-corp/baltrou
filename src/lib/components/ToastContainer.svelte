@@ -14,11 +14,7 @@
 
 <div class="toast-container">
 	{#each $toasts as toast (toast.id)}
-		<div
-			class="toast {toast.type}"
-			in:fly={{ y: 20, duration: 300 }}
-			out:fade={{ duration: 200 }}
-		>
+		<div class="toast {toast.type}" in:fly={{ y: 20, duration: 300 }} out:fade={{ duration: 200 }}>
 			<div class="icon-wrapper">
 				{@html icons[toast.type]}
 			</div>
@@ -49,15 +45,15 @@
 		align-items: flex-start; /* Aligner en haut pour les longs messages */
 		gap: 0.75rem;
 		padding: 1rem;
-		
+
 		/* Style de base "Glassmorphism" sombre */
 		background-color: rgba(15, 15, 25, 0.9); /* Très sombre, légèrement transparent */
 		backdrop-filter: blur(12px);
 		border-radius: var(--radius-md, 8px);
 		box-shadow: var(--shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.3));
-		
+
 		/* Bordure gauche colorée pour indiquer le type */
-		border-left: 4px solid transparent; 
+		border-left: 4px solid transparent;
 		border-top: 1px solid rgba(255, 255, 255, 0.1);
 		border-right: 1px solid rgba(255, 255, 255, 0.1);
 		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -99,20 +95,36 @@
 	}
 
 	/* --- Variantes de couleurs (Bordure + Icône) --- */
-	
+
 	/* Info (Bleu) */
-	.toast.info { border-left-color: var(--accent-info, #3b82f6); }
-	.toast.info .icon-wrapper { color: var(--accent-info, #3b82f6); }
+	.toast.info {
+		border-left-color: var(--accent-info, #3b82f6);
+	}
+	.toast.info .icon-wrapper {
+		color: var(--accent-info, #3b82f6);
+	}
 
 	/* Success (Vert) */
-	.toast.success { border-left-color: var(--accent-success, #22c55e); }
-	.toast.success .icon-wrapper { color: var(--accent-success, #22c55e); }
+	.toast.success {
+		border-left-color: var(--accent-success, #22c55e);
+	}
+	.toast.success .icon-wrapper {
+		color: var(--accent-success, #22c55e);
+	}
 
 	/* Warning (Jaune) */
-	.toast.warning { border-left-color: var(--accent-warning, #eab308); }
-	.toast.warning .icon-wrapper { color: var(--accent-warning, #eab308); }
+	.toast.warning {
+		border-left-color: var(--accent-warning, #eab308);
+	}
+	.toast.warning .icon-wrapper {
+		color: var(--accent-warning, #eab308);
+	}
 
 	/* Error (Rouge) */
-	.toast.error { border-left-color: var(--accent-danger, #ef4444); }
-	.toast.error .icon-wrapper { color: var(--accent-danger, #ef4444); }
+	.toast.error {
+		border-left-color: var(--accent-danger, #ef4444);
+	}
+	.toast.error .icon-wrapper {
+		color: var(--accent-danger, #ef4444);
+	}
 </style>

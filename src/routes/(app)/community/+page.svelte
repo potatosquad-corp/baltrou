@@ -1,8 +1,8 @@
 <script>
-	import Chat from "$lib/components/Chat.svelte";
-	import PinnedMessage from "$lib/components/PinnedMessage.svelte";
-
+	import Chat from '$lib/components/Chat.svelte';
+	import PinnedMessage from '$lib/components/PinnedMessage.svelte';
 </script>
+
 <h1>Communauté</h1>
 
 <div class="community-grid">
@@ -41,4 +41,3 @@
 		}
 	}
 </style>
-

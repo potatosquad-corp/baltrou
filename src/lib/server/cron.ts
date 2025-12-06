@@ -59,7 +59,7 @@ export async function processUser(user: User) {
 				totalBits: totalBits
 			}
 		};
-		
+
 		addViewerRecord({
 			count: streamInfo?.viewer_count || 0,
 			timestamp: Date.now()

@@ -26,10 +26,14 @@
 			placeholder="http://192.168.1.10"
 		/>
 	</div>
-  <p>Format: http(s)://[domaine](:port) </p>
+	<p>Format: http(s)://[domaine](:port)</p>
 
 	<div class="button-group">
-		<button class="btn btn-primary" on:click={pingLightApi} disabled={$lightApiStatus === 'CONNECTING'}>
+		<button
+			class="btn btn-primary"
+			on:click={pingLightApi}
+			disabled={$lightApiStatus === 'CONNECTING'}
+		>
 			Connecter
 		</button>
 	</div>

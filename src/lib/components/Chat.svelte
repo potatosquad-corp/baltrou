@@ -67,7 +67,7 @@
 <style>
 	.chat-container {
 		padding: 1rem;
-    margin: 0;
+		margin: 0;
 		display: flex;
 		flex-direction: column;
 		height: 600px;

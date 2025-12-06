@@ -19,9 +19,9 @@ export async function GET({ cookies }) {
 	}
 
 	const user = await getUser(userId);
-	if(!user) {
+	if (!user) {
 		console.log('[SSE] User not found, aborting...');
-		throw error(404,"User id not found");
+		throw error(404, 'User id not found');
 	}
 
 	const channel = `event:${userId}`;
@@ -35,8 +35,8 @@ export async function GET({ cookies }) {
 			};
 
 			eventBus.on(channel, handler);
-			
-			await ircManager.joinChannel(userId,user.user_login);
+
+			await ircManager.joinChannel(userId, user.user_login);
 			await processUser(user);
 
 			console.log(`[SSE] Client ${userId} connected`);
@@ -45,7 +45,7 @@ export async function GET({ cookies }) {
 		async cancel() {
 			console.log(`[SSE] Client ${userId} disconnected`);
 			eventBus.off(channel, handler);
-			await ircManager.partChannel(userId,user.user_login);
+			await ircManager.partChannel(userId, user.user_login);
 		}
 	});
 
@@ -58,7 +58,7 @@ export async function GET({ cookies }) {
 	});
 }
 
-export async function POST({ request, cookies}) {
+export async function POST({ request, cookies }) {
 	const userId = cookies.get('user_id');
 
 	// Si aucun cookie, l'utilisateur n'est pas autorisé.
@@ -66,8 +66,8 @@ export async function POST({ request, cookies}) {
 		throw error(401, 'Non autorisé');
 	}
 	const channel = `event:${userId}`;
-	const payload = await request.json()
-	eventBus.emit(channel,payload);
+	const payload = await request.json();
+	eventBus.emit(channel, payload);
 
 	return json({});
 }

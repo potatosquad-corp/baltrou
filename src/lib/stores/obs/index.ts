@@ -8,13 +8,13 @@ const { sceneModule, hydrateScenes } = createSceneModule(client);
 const { audioModule, hydrateAudioSources } = createAudioModule(client);
 
 async function init() {
-  await client.connect();
-  await hydrateScenes();
-  await hydrateAudioSources();
+	await client.connect();
+	await hydrateScenes();
+	await hydrateAudioSources();
 }
 export const obs = {
 	client,
 	...sceneModule,
 	...audioModule,
-  init
+	init
 };

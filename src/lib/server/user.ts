@@ -4,9 +4,8 @@ import { db } from './db';
 
 export type User = {
 	id: string;
-    user_login: string;
+	user_login: string;
 	credentials: Credentials;
-	
 };
 
 export type Credentials = {
@@ -44,16 +43,16 @@ export async function getUser(userId: string): Promise<User | null> {
 	return db.data.users.find((usr) => usr.id == userId) || null;
 }
 
-export async function updateCredentials(user_id:string, credentials: Credentials) {
-    await db.read();
-    db.data.users.forEach((usr) => {
-        if (usr.id != user_id) return;
-        usr.credentials = credentials;
-    })
-    await db.write();
+export async function updateCredentials(user_id: string, credentials: Credentials) {
+	await db.read();
+	db.data.users.forEach((usr) => {
+		if (usr.id != user_id) return;
+		usr.credentials = credentials;
+	});
+	await db.write();
 }
 
-export async function getAllUsers(){
+export async function getAllUsers() {
 	await db.read();
 	return db.data.users;
 }

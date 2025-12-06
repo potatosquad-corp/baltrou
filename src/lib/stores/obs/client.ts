@@ -30,7 +30,7 @@ function saveSettings(settings: ObsSettings) {
 async function connect() {
 	const settings = loadSettings();
 	const timeout = new Promise((_, reject) => {
-		setTimeout(() => reject({code: 1000,message:"Connexion timeout"}), 1000 * 50);
+		setTimeout(() => reject({ code: 1000, message: 'Connexion timeout' }), 1000 * 50);
 	});
 	if (!settings) {
 		status.set(ConnectionStatus.ERROR);
@@ -46,9 +46,9 @@ async function connect() {
 		await Promise.race([
 			obsClient.connect(`wss://${settings.host}/ws?room=${settings.room}`, settings.password),
 			timeout
-		]) 
+		]);
 	} catch (err) {
-		console.error(`[OBS] Erreur de connexion:`,err);
+		console.error(`[OBS] Erreur de connexion:`, err);
 		status.set(ConnectionStatus.ERROR);
 	}
 }

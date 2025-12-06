@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { appMode } from "$lib/stores/global-store";
-
+	import { appMode } from '$lib/stores/global-store';
 
 	function setMode(mode: 'CONFIG' | 'STREAM') {
 		$appMode = mode;
@@ -12,11 +11,7 @@
 	<div class="slider" class:stream-mode={$appMode === 'STREAM'}></div>
 
 	<!-- Bouton Config -->
-	<button
-		class="toggle-btn"
-		class:active={$appMode === 'CONFIG'}
-		onclick={() => setMode('CONFIG')}
-	>
+	<button class="toggle-btn" class:active={$appMode === 'CONFIG'} onclick={() => setMode('CONFIG')}>
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 24 24"
@@ -32,11 +27,7 @@
 	</button>
 
 	<!-- Bouton Stream -->
-	<button
-		class="toggle-btn"
-		class:active={$appMode === 'STREAM'}
-		onclick={() => setMode('STREAM')}
-	>
+	<button class="toggle-btn" class:active={$appMode === 'STREAM'} onclick={() => setMode('STREAM')}>
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 24 24"

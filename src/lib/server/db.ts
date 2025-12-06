@@ -14,7 +14,7 @@ type Schema = {
 	sounds: SoundFile[];
 };
 
-const adapter = new JSONFile<Schema>('db.json');
+const adapter = new JSONFile<Schema>('data/db.json');
 const defaultData: Schema = { users: [], viewer_history: [], sounds: [] };
 export const db = new Low<Schema>(adapter, defaultData);
 

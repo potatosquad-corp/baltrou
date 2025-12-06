@@ -73,7 +73,9 @@
 		const target = e.target as HTMLInputElement;
 		const files = validateFiles(target.files);
 		if (files.length > 0) onfiles?.(files);
-		setTimeout(() => {(status = 'idle')}, 2000);
+		setTimeout(() => {
+			status = 'idle';
+		}, 2000);
 	};
 </script>
 

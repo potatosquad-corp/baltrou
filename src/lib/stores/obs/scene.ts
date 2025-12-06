@@ -33,7 +33,9 @@ export function createSceneModule(client: ObsClient) {
 		const currentScene =
 			get(sceneList).find((scene) => scene.uuid == currentProgramSceneUuid) || undefined;
 		activeScene.set(currentScene);
-		console.info(`[OBS] Hydrated scenes, got ${get(sceneList).length} scene${get(sceneList).length > 1 ? 's' : ''}`);
+		console.info(
+			`[OBS] Hydrated scenes, got ${get(sceneList).length} scene${get(sceneList).length > 1 ? 's' : ''}`
+		);
 	}
 
 	if (browser) {

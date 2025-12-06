@@ -47,7 +47,6 @@ export async function POST({ request, cookies }: RequestEvent) {
 		// Votre composant Chat.svelte devrait ajouter le message
 		// "optimistiquement" (côté client) dès que l'utilisateur
 		// appuie sur "Envoyer".
-
 	} catch (err: any) {
 		console.error('[API Chat POST] Erreur:', err);
 		if (err.status) throw err; // Transférer les erreurs 'error()'

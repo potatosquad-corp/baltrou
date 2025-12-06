@@ -2,12 +2,12 @@ import { writable } from 'svelte/store';
 import { events, type SseEvent } from './event-store';
 
 export type TwitchStats = {
-  isLive: boolean,
-  viewerCount: number,
-  followerCount: number,
-  subscriberCount: number,
-  totalBits: number
-}
+	isLive: boolean;
+	viewerCount: number;
+	followerCount: number;
+	subscriberCount: number;
+	totalBits: number;
+};
 
 /**
  * L'état initial des statistiques.
@@ -15,11 +15,11 @@ export type TwitchStats = {
  * mise à jour du CRON.
  */
 const initialState: TwitchStats = {
-  isLive: false,
-  viewerCount: 0,
-  followerCount: 0,
-  subscriberCount: 0,
-  totalBits: 0,
+	isLive: false,
+	viewerCount: 0,
+	followerCount: 0,
+	subscriberCount: 0,
+	totalBits: 0
 };
 
 // 1. Créer le store 'writable' interne
@@ -27,16 +27,14 @@ const store = writable<TwitchStats>(initialState);
 
 // 2. S'abonner au diffuseur d'événements (eventStore)
 events.subscribe((event: SseEvent | null) => {
-  
-  // 3. Filtrer pour le bon type d'événement
-  if (event && event.type === 'twitch_stats_update') {
-    
-    const newStats = event.data as TwitchStats;
-    
-    // 4. Remplacer (set) l'état précédent
-    //    par les nouvelles statistiques.
-    store.set(newStats);
-  }
+	// 3. Filtrer pour le bon type d'événement
+	if (event && event.type === 'twitch_stats_update') {
+		const newStats = event.data as TwitchStats;
+
+		// 4. Remplacer (set) l'état précédent
+		//    par les nouvelles statistiques.
+		store.set(newStats);
+	}
 });
 
 /**
@@ -44,5 +42,5 @@ events.subscribe((event: SseEvent | null) => {
  * pour que les composants ne puissent pas le modifier directement.
  */
 export const stats = {
-  subscribe: store.subscribe
+	subscribe: store.subscribe
 };

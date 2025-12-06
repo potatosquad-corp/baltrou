@@ -1,8 +1,7 @@
 <script>
-	import Clock from "$lib/components/widgets/Clock.svelte";
-	import QuickLinks from "$lib/components/widgets/QuickLinks.svelte";
-	import Timer from "$lib/components/widgets/Timer.svelte";
-
+	import Clock from '$lib/components/widgets/Clock.svelte';
+	import QuickLinks from '$lib/components/widgets/QuickLinks.svelte';
+	import Timer from '$lib/components/widgets/Timer.svelte';
 </script>
 
 <svelte:head>
@@ -18,7 +17,6 @@
 
 	<!-- 2. Grille Principale -->
 	<div class="main-grid">
-		
 		<!-- COLONNE GAUCHE : En Cours (Placeholder) -->
 		<div class="card no-margin placeholder-column">
 			<h2 class="xl-label">EN COURS</h2>
@@ -36,7 +34,7 @@
 			<div class="widget-wrapper">
 				<Timer />
 			</div>
-			
+
 			<!-- Clock prend toute la largeur -->
 			<div class="widget-wrapper">
 				<Clock />
@@ -60,7 +58,6 @@
 				{/each}
 			</div>
 		</div>
-
 	</div>
 </div>
 
@@ -95,7 +92,7 @@
 	.main-grid {
 		display: grid;
 		/* 3 Colonnes : 1fr (25%), 1.5fr (50% large), 1fr (25%) */
-		grid-template-columns: 1fr 1.5fr 1fr; 
+		grid-template-columns: 1fr 1.5fr 1fr;
 		gap: 1rem;
 		align-items: start; /* Aligner en haut */
 	}
@@ -160,8 +157,8 @@
 	.logo-mock {
 		font-size: 4rem;
 		font-family: 'Bebas Neue';
-		color: rgba(255,255,255,0.2);
-		border: 2px solid rgba(255,255,255,0.2);
+		color: rgba(255, 255, 255, 0.2);
+		border: 2px solid rgba(255, 255, 255, 0.2);
 		width: 80px;
 		height: 80px;
 		display: flex;

@@ -12,6 +12,6 @@ export const load = async ({ url, cookies }) => {
 	}
 
 	return {
-		isLoggedIn: isLoggedIn,
+		isLoggedIn: isLoggedIn
 	};
 };

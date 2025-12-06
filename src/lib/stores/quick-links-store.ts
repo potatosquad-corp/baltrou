@@ -13,11 +13,13 @@ const STORAGE_KEY = 'baltrou_quick_links';
 function createQuickLinksStore() {
 	// Charger depuis le localStorage si disponible
 	const stored = browser ? localStorage.getItem(STORAGE_KEY) : null;
-	const initial: QuickLink[] = stored ? JSON.parse(stored) : [
-        // Données par défaut pour l'exemple
-        { id: '1', title: 'Twitch', url: 'https://twitch.tv', color: '#450e59' },
-        { id: '2', title: 'YouTube', url: 'https://youtube.com', color: '#831100' }
-    ];
+	const initial: QuickLink[] = stored
+		? JSON.parse(stored)
+		: [
+				// Données par défaut pour l'exemple
+				{ id: '1', title: 'Twitch', url: 'https://twitch.tv', color: '#450e59' },
+				{ id: '2', title: 'YouTube', url: 'https://youtube.com', color: '#831100' }
+			];
 
 	const { subscribe, update } = writable<QuickLink[]>(initial);
 

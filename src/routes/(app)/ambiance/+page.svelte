@@ -16,17 +16,17 @@
 		{ name: 'Vif', selected: false, color: '#FF0000', sound: 'Rock' },
 		{ name: 'Coloré', selected: false, color: '#0000FF', sound: 'Pop' },
 		{ name: 'Sombre', selected: false, color: '#000000', sound: 'Jazz' },
-		{ name: 'Chaleureux', selected: false, color: '#00FF00', sound: 'Acoustic' },
+		{ name: 'Chaleureux', selected: false, color: '#00FF00', sound: 'Acoustic' }
 	]);
 
 	async function selectAmbiance(ambiance: Ambiance) {
-		ambiances.forEach(a => a.selected = false);
+		ambiances.forEach((a) => (a.selected = false));
 		ambiance.selected = true;
-    const rgb = hexToRgb(ambiance.color);
-    await fetch(`https://api.foustouille.fr/api/color/${rgb[0]}/${rgb[1]}/${rgb[2]}`);
+		const rgb = hexToRgb(ambiance.color);
+		await fetch(`https://api.foustouille.fr/api/color/${rgb[0]}/${rgb[1]}/${rgb[2]}`);
 	}
 
-	let selectedAmbiance: Ambiance = $derived(ambiances.find(a => a.selected)!);
+	let selectedAmbiance: Ambiance = $derived(ambiances.find((a) => a.selected)!);
 
 	type SoundboardItem = {
 		name: string;
@@ -36,52 +36,56 @@
 		{ name: 'Applause' },
 		{ name: 'Laugh' },
 		{ name: 'Sad Trombone' },
-		{ name: 'Drum Roll' },
+		{ name: 'Drum Roll' }
 	];
-  export function hexToRgb(hex: string): [number, number, number] {
-  // 1. Nettoyer le '#' au début
-  const hexString = hex.startsWith('#') ? hex.slice(1) : hex;
+	export function hexToRgb(hex: string): [number, number, number] {
+		// 1. Nettoyer le '#' au début
+		const hexString = hex.startsWith('#') ? hex.slice(1) : hex;
 
-  // 2. Gérer le format court (ex: #F00 -> #FF0000)
-  let fullHex = hexString;
-  if (fullHex.length === 3) {
-    fullHex = fullHex
-      .split('')
-      .map((char) => char + char)
-      .join('');
-  }
+		// 2. Gérer le format court (ex: #F00 -> #FF0000)
+		let fullHex = hexString;
+		if (fullHex.length === 3) {
+			fullHex = fullHex
+				.split('')
+				.map((char) => char + char)
+				.join('');
+		}
 
-  // 3. Vérifier la longueur finale (doit être RRGGBB)
-  if (fullHex.length !== 6) {
-    console.warn(`Format hexadécimal invalide: ${hex}`);
-    return [0,0,0];
-  }
+		// 3. Vérifier la longueur finale (doit être RRGGBB)
+		if (fullHex.length !== 6) {
+			console.warn(`Format hexadécimal invalide: ${hex}`);
+			return [0, 0, 0];
+		}
 
-  // 4. Parser les valeurs R, G, B
-  const r = parseInt(fullHex.substring(0, 2), 16);
-  const g = parseInt(fullHex.substring(2, 4), 16);
-  const b = parseInt(fullHex.substring(4, 6), 16);
+		// 4. Parser les valeurs R, G, B
+		const r = parseInt(fullHex.substring(0, 2), 16);
+		const g = parseInt(fullHex.substring(2, 4), 16);
+		const b = parseInt(fullHex.substring(4, 6), 16);
 
-  // 5. Vérifier si le parsing a réussi (au cas où la chaîne contient des non-hex)
-  if (isNaN(r) || isNaN(g) || isNaN(b)) {
-    console.warn(`Impossible de parser la chaîne hexadécimale: ${hex}`);
-    return [0,0,0];
-  }
+		// 5. Vérifier si le parsing a réussi (au cas où la chaîne contient des non-hex)
+		if (isNaN(r) || isNaN(g) || isNaN(b)) {
+			console.warn(`Impossible de parser la chaîne hexadécimale: ${hex}`);
+			return [0, 0, 0];
+		}
 
-  return [r, g, b];
-}
-
+		return [r, g, b];
+	}
 </script>
 
 <h1>Ambiance Lumineuse & Sonore</h1>
 
 <div class="ambiance-banner" style="background-color: {selectedAmbiance.color}">
-    <h2>{selectedAmbiance.name}</h2>
+	<h2>{selectedAmbiance.name}</h2>
 </div>
 
 <div class="buttons-grid">
 	{#each ambiances as ambiance}
-		<ShortcutButton name={ambiance.name} selected={ambiance.selected} color={ambiance.color} on:click={() => selectAmbiance(ambiance)}>
+		<ShortcutButton
+			name={ambiance.name}
+			selected={ambiance.selected}
+			color={ambiance.color}
+			on:click={() => selectAmbiance(ambiance)}
+		>
 			<div slot="icon" class="icon-group">
 				<LightbulbIcon />
 				<MusicIcon />
@@ -111,7 +115,7 @@
 
 	.ambiance-banner h2 {
 		margin: 0;
-		text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+		text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 	}
 
 	.buttons-grid {

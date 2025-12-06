@@ -45,12 +45,7 @@
 
 	<div class="info">
 		{#if isEditing}
-			<input
-				type="text"
-				class="edit-input"
-				bind:value={editName}
-				onkeydown={handleKeydown}
-			/>
+			<input type="text" class="edit-input" bind:value={editName} onkeydown={handleKeydown} />
 		{:else}
 			<span class="name" title={sound.name}>{sound.name}</span>
 			<span class="id-badge">ID: {sound.id.substring(0, 6)}...</span>
@@ -65,8 +60,7 @@
 					width="18"
 					height="18"
 					viewBox="0 0 24 24"
-					fill="currentColor"
-					><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" /></svg
+					fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" /></svg
 				>
 			</button>
 			<button class="action-btn cancel" onclick={handleCancel} title="Annuler">
@@ -108,7 +102,9 @@
 		gap: 1rem;
 		padding: 0.75rem 1rem;
 		margin: 0; /* Override le margin du .card global si besoin */
-		transition: transform 0.2s, background-color 0.2s;
+		transition:
+			transform 0.2s,
+			background-color 0.2s;
 	}
 
 	.sound-item:hover {
@@ -129,7 +125,9 @@
 		cursor: pointer;
 		flex-shrink: 0;
 		color: white;
-		transition: filter 0.2s, transform 0.1s;
+		transition:
+			filter 0.2s,
+			transform 0.1s;
 		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 	}
 
@@ -137,7 +135,7 @@
 		filter: brightness(1.2);
 		transform: scale(1.05);
 	}
-	
+
 	.play-btn:active {
 		transform: scale(0.95);
 	}
@@ -207,7 +205,7 @@
 	.action-btn.save {
 		color: var(--accent-success);
 	}
-	
+
 	.action-btn.edit:hover {
 		color: var(--accent-info);
 	}

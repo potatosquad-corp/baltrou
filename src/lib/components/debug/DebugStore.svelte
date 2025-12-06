@@ -19,14 +19,13 @@
 </script>
 
 <div class="debug-store-tab">
-
 	<!-- Store: Global store -->
 	<div class="store-display">
 		<h3>Auth (Global store)</h3>
-		<pre>{JSON.stringify($auth,jsonReplacer,2)}</pre>
+		<pre>{JSON.stringify($auth, jsonReplacer, 2)}</pre>
 		<h3>Mode (Global store)</h3>
 		<pre>{JSON.stringify($appMode, jsonReplacer, 2)}</pre>
-	</div> 
+	</div>
 
 	<!-- Store: OBS store -->
 	<div class="store-display">
@@ -40,12 +39,11 @@
 		<pre>{JSON.stringify($audioSources, jsonReplacer, 2)}</pre>
 	</div>
 
-		<!-- Store: stats store -->
+	<!-- Store: stats store -->
 	<div class="store-display">
 		<h3>sounds (soundboard store)</h3>
 		<pre>{JSON.stringify($soundboardStore, jsonReplacer, 2)}</pre>
 	</div>
-
 
 	<!-- Store: stats store -->
 	<div class="store-display">

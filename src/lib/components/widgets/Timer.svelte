@@ -8,14 +8,14 @@
 
 	onMount(() => {
 		const interval = setInterval(() => {
-      now = new Date();
-      
-      if ($timer && now >= $timer) {
-        const nextTarget = new Date($timer);
-        nextTarget.setDate(nextTarget.getDate() + 1);
-        timer.set(nextTarget);
-      }
-    }, 100);
+			now = new Date();
+
+			if ($timer && now >= $timer) {
+				const nextTarget = new Date($timer);
+				nextTarget.setDate(nextTarget.getDate() + 1);
+				timer.set(nextTarget);
+			}
+		}, 100);
 		return () => clearInterval(interval);
 	});
 

@@ -47,5 +47,4 @@
 	.pinned-message .message {
 		font-family: 'Inter', sans-serif;
 	}
-
 </style>

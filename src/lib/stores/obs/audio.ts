@@ -82,7 +82,9 @@ export function createAudioModule(client: ObsClient) {
 				muted: volumeMap.get(source.uuid)?.[1] || false
 			}))
 		);
-		console.info(`[OBS] Hydrated audio sources, got ${get(audioSources).length} source${get(audioSources).length > 1 ? 's': ''}`);
+		console.info(
+			`[OBS] Hydrated audio sources, got ${get(audioSources).length} source${get(audioSources).length > 1 ? 's' : ''}`
+		);
 	}
 
 	async function getsourcesInScene(sceneUuid: string): Promise<Set<string>> {

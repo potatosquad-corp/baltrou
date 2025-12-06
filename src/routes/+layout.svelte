@@ -1,4 +1,5 @@
 <script lang="ts">
-  import './root.css';
+	import './root.css';
 </script>
-<slot/>
+
+<slot />

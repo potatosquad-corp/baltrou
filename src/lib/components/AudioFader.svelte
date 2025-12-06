@@ -6,22 +6,27 @@
 	export let muted = false;
 	export let volumePercentage = 0;
 	export let name = 'Unnamed';
-	export let uuid:string;
+	export let uuid: string;
 	export let active = false;
-  function toggleMute() {
-    muted = !muted
+	function toggleMute() {
+		muted = !muted;
 		obs.audioSources.toggleMute(uuid);
-  }
-  function valueChange() {
-    obs.audioSources.setVolume(uuid,volumePercentage)
-  }
+	}
+	function valueChange() {
+		obs.audioSources.setVolume(uuid, volumePercentage);
+	}
 </script>
 
 <div class="fader-container" class:active>
 	<div class="fader">
 		<label for={name}>{name}</label>
 		<div class="range-wrapper">
-			<input type="range" oninput={valueChange} bind:value={volumePercentage} style="--progress-percent: {volumePercentage}%" />
+			<input
+				type="range"
+				oninput={valueChange}
+				bind:value={volumePercentage}
+				style="--progress-percent: {volumePercentage}%"
+			/>
 		</div>
 	</div>
 	<button class="icon-wrapper" onclick={toggleMute} class:muted>
@@ -34,14 +39,14 @@
 </div>
 
 <style>
-  .icon-wrapper {
-        width: auto;
-        padding: 0 0.5rem;
-        height: 40px;
-        background-color: rgba(255, 255, 255, 0.2);
-        border-radius: 20px;
-        margin-top: 5px;
-    }
+	.icon-wrapper {
+		width: auto;
+		padding: 0 0.5rem;
+		height: 40px;
+		background-color: rgba(255, 255, 255, 0.2);
+		border-radius: 20px;
+		margin-top: 5px;
+	}
 	.fader-container {
 		display: flex;
 		flex-direction: column;
@@ -89,9 +94,9 @@
 		color: #ff4d4d;
 	}
 
-  label {
-    margin-bottom: 5px;
-  }
+	label {
+		margin-bottom: 5px;
+	}
 
 	input[type='range'] {
 		-webkit-appearance: none; /* Supprime le style natif */

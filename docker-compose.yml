@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  baltrou:
+    image: ghcr.io/potatosquad-corp/baltrou:latest
+
+    container_name: baltrou
+    restart: unless-stopped
+    ports:
+      - '4000:4000'
+
+    environment:
+      - ORIGIN=https://example.com
+      - TWITCH_CLIENT_ID=CHANGE_ME
+      - TWITCH_CLIENT_SECRET=CHANGE_ME
+
+    volumes:
+      - ./baltrou-data:/app/data
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 60 --cleanup

@@ -44,18 +44,18 @@
 			headers: {
 				'Content-Type': 'application/json'
 			},
-      method: 'POST',
+			method: 'POST'
 		});
 	}
 
-  function testToast(){
-    toasts.add("Test info",'info');
-    toasts.add("Test success",'success');
-    toasts.add("Test warning",'warning');
-    toasts.add("Test error",'error');
-  }
+	function testToast() {
+		toasts.add('Test info', 'info');
+		toasts.add('Test success', 'success');
+		toasts.add('Test warning', 'warning');
+		toasts.add('Test error', 'error');
+	}
 
-	async function setFullscreen(){
+	async function setFullscreen() {
 		await document.body.requestFullscreen();
 	}
 </script>
