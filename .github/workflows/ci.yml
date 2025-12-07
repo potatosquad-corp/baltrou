@@ -77,15 +77,15 @@ jobs:
       - name: Bundle app
         run: |
           cp .env.example .env
-          tar -czf baltrou-release-v${{needs.check-version.outputs.version}}.tar.gz build package.json .env
+          tar -czf baltrou-release-${{needs.check-version.outputs.version}}.tar.gz build package.json .env
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ needs.check-version.outputs.version }}
-          name: Baltrou v${{ needs.check-version.outputs.version }}
+          tag_name: ${{ needs.check-version.outputs.version }}
+          name: Baltrou ${{ needs.check-version.outputs.version }}
           draft: false
           prerelease: false
-          files: baltrou-release-v${{needs.check-version.outputs.version}}.tar.gz
+          files: baltrou-release-${{needs.check-version.outputs.version}}.tar.gz
           body: |
             ## 🚀 New Baltrou Release
 
