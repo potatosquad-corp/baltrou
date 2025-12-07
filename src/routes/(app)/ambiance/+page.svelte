@@ -3,6 +3,8 @@
 	import MusicIcon from '$lib/components/icons/MusicIcon.svelte';
 	import ShortcutButton from '$lib/components/icons/ShortcutButton.svelte';
 	import VolumeUpIcon from '$lib/components/icons/VolumeIcon.svelte';
+	import { lightApiUrl } from '$lib/stores/lights-store';
+	import { soundboardStore, type Sound } from '$lib/stores/soundboard-store';
 
 	type Ambiance = {
 		name: string;
@@ -19,25 +21,31 @@
 		{ name: 'Chaleureux', selected: false, color: '#00FF00', sound: 'Acoustic' }
 	]);
 
+	function playSound(sound: Sound) {
+		fetch('/api/events', {
+			body: JSON.stringify({
+				data: {
+					id: sound.id
+				},
+				type: 'play_sound'
+			}),
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			method: 'POST'
+		});
+	}
+
 	async function selectAmbiance(ambiance: Ambiance) {
 		ambiances.forEach((a) => (a.selected = false));
 		ambiance.selected = true;
 		const rgb = hexToRgb(ambiance.color);
-		await fetch(`https://api.foustouille.fr/api/color/${rgb[0]}/${rgb[1]}/${rgb[2]}`);
+		$lightApiUrl
+		await fetch(`${$lightApiUrl}/color/${rgb[0]}/${rgb[1]}/${rgb[2]}/1`);
 	}
 
 	let selectedAmbiance: Ambiance = $derived(ambiances.find((a) => a.selected)!);
 
-	type SoundboardItem = {
-		name: string;
-	};
-
-	let soundboardItems: SoundboardItem[] = [
-		{ name: 'Applause' },
-		{ name: 'Laugh' },
-		{ name: 'Sad Trombone' },
-		{ name: 'Drum Roll' }
-	];
 	export function hexToRgb(hex: string): [number, number, number] {
 		// 1. Nettoyer le '#' au début
 		const hexString = hex.startsWith('#') ? hex.slice(1) : hex;
@@ -97,11 +105,17 @@
 <div class="soundboard-section">
 	<h2>Soundboard</h2>
 	<div class="buttons-grid">
-		{#each soundboardItems as item}
-			<ShortcutButton name={item.name}>
+		{#each $soundboardStore as sound (sound.id)}
+			<ShortcutButton on:click={() => playSound(sound)} name={sound.name}>
 				<VolumeUpIcon slot="icon" />
 			</ShortcutButton>
 		{/each}
+		{#if $soundboardStore.length == 0}
+			<div class="card center">
+				<h2>Aucun son pour l'instant</h2>
+				<p>Ajoute des son <a href="/soundboard">ici</a></p>
+			</div>
+		{/if}
 	</div>
 </div>
 

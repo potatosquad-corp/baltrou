@@ -4,7 +4,7 @@
 	export let color: string | null = null;
 </script>
 
-<button class="shortcut-button" class:selected on:click>
+<button class="card" class:selected on:click>
 	{#if color}
 		<div class="color-bar" style="background-color: {color}"></div>
 	{/if}
@@ -15,21 +15,14 @@
 </button>
 
 <style>
-	.shortcut-button {
-		display: flex;
-		position: relative;
-		background-color: rgba(255, 255, 255, 0.1);
-		border-radius: 8px;
-		padding: 1rem;
+	.card {
 		height: 100px;
 		max-width: 300px;
 		width: 100%;
 		justify-self: center;
 		cursor: pointer;
 		transition: background-color 0.2s;
-		border: 2px solid transparent;
 		font-family: inherit;
-		color: white;
 		overflow: hidden;
 	}
 
@@ -41,11 +34,11 @@
 		height: 5px;
 	}
 
-	.shortcut-button:hover {
+	.card:hover {
 		background-color: rgba(255, 255, 255, 0.2);
 	}
 
-	.shortcut-button.selected {
+	.card.selected {
 		box-shadow: 0 0 15px 5px rgba(0, 255, 0, 0.5);
 		border-color: rgba(0, 255, 0, 0.7);
 	}

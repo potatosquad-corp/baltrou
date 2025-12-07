@@ -100,13 +100,17 @@
 	background-color: var(--accent-success);
 }
 
-/* --- TITLES --- */
+/* --- TEXTS --- */
 h1,
 h2,
 h3 {
 	font-family: var(--font-heading);
 	letter-spacing: 0.05em;
 	margin-top: 0;
+}
+
+a {
+	color: var(--accent-primary);
 }
 
 /* --- STATUS --- */
