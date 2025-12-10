@@ -1,23 +1,27 @@
 <script lang="ts">
+	import { noop } from '$lib/utils';
 	import { type Icon } from '@lucide/svelte';
 	import { type Component } from 'svelte';
 
 	type ToggleOption = {
 		value: string;
 		label: string;
-		icon?: Icon;
+		icon?: typeof Icon;
 	};
 
 	let {
 		options = [],
-		value = $bindable()
+		value = $bindable(),
+		onChange = noop
 	}: {
 		options: ToggleOption[];
 		value: string;
+		onChange?: (value:string)=>void
 	} = $props();
 
 	function select(val: string) {
 		value = val;
+		onChange(value);
 	}
 </script>
 

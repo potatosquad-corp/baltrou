@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { noop } from '$lib/utils';
 	import type { Component } from 'svelte';
 
-	const noop = () => {};
 	let {
 		checked = $bindable(false),
 		onChange = noop,

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { chat, type ChatMessage } from '$lib/stores/chat-store';
 	import { onMount } from 'svelte';
-	import PinIcon from './icons/PinIcon.svelte';
+	import {Pin} from '@lucide/svelte'
 
 	let messageToSend = '';
 	let chatContainer: HTMLElement;
@@ -19,18 +19,18 @@
 
 	async function sendMessage() {
 		if (messageToSend.trim() === '') return;
+		const messageContent = messageToSend;
+		messageToSend = ''
 		try {
 			await fetch('/api/chat', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ message: messageToSend.trim() })
+				body: JSON.stringify({ message: messageContent.trim() })
 			});
 		} catch (error) {
 			console.error('Error sending message:', error);
-		} finally {
-			messageToSend = '';
 		}
 	}
 </script>
@@ -45,7 +45,7 @@
 					<span>{message.message}</span>
 				</div>
 				<button class="pin-button" onclick={() => pinMessage(message)}>
-					<PinIcon />
+					<Pin />
 				</button>
 			</div>
 		{/each}
@@ -71,6 +71,7 @@
 		display: flex;
 		flex-direction: column;
 		height: 600px;
+		max-width: 600px;
 	}
 
 	.chat-messages {
@@ -86,6 +87,7 @@
 		align-items: center;
 		padding: 0.25rem;
 		border-radius: 4px;
+		word-break: break-all;
 	}
 
 	.message:hover {

@@ -27,3 +27,6 @@ export function jsonReplacer(key: string, value: any) {
 	}
 	return value;
 }
+ 
+/** Function that does nothing at all */
+export const noop = () => {};

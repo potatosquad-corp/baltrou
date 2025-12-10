@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { Component } from 'svelte';
 	import {
 		EyeOff,
 		ChartArea,
@@ -12,23 +11,24 @@
 		type Icon
 	} from '@lucide/svelte';
 	import SegmentedToggle from '$lib/components/ui/SegmentedToggle.svelte';
+	import { lightApiUrl } from '$lib/stores/fiak-store';
 
 	let overlayStates = $state({
-		mainCam: 'center',
-		secondaryCam: 'center',
-		bottom: 'hide',
-		right: 'hide',
-		left: 'hide',
-		top: 'hide'
+		main: 'center',
+		secondary: 'center',
+		bottom: 'reset',
+		right: 'reset',
+		left: 'reset',
+		top: 'reset'
 	});
 
 	const configs: {
 		id: string;
 		label: string;
-		options: { value: string; label: string; icon?: Icon }[];
+		options: { value: string; label: string; icon?: typeof Icon }[];
 	}[] = [
 		{
-			id: 'mainCam',
+			id: 'main',
 			label: 'Main',
 			options: [
 				{ label: 'Center', value: 'center' },
@@ -38,7 +38,7 @@
 			]
 		},
 		{
-			id: 'secondaryCam',
+			id: 'secondary',
 			label: 'Secondary',
 			options: [
 				{ label: 'Center', value: 'center' },
@@ -51,7 +51,7 @@
 			id: 'bottom',
 			label: 'Bottom',
 			options: [
-				{ label: 'Hide', value: 'hide', icon: EyeOff },
+				{ label: 'Hide', value: 'reset', icon: EyeOff },
 				{ label: 'Stats', value: 'stats', icon: ChartArea },
 				{ label: 'Pin', value: 'pin', icon: Pin }
 			]
@@ -60,7 +60,7 @@
 			id: 'right',
 			label: 'Right',
 			options: [
-				{ label: 'Hide', value: 'hide', icon: EyeOff },
+				{ label: 'Hide', value: 'reset', icon: EyeOff },
 				{ label: 'Ad', value: 'ad', icon: BadgeDollarSign },
 				{ label: 'Commands', value: 'commands', icon: Terminal },
 				{ label: 'Activity', value: 'activity', icon: PartyPopper }
@@ -70,47 +70,54 @@
 			id: 'left',
 			label: 'Left',
 			options: [
-				{ label: 'Hide', value: 'hide', icon: EyeOff },
-				{ label: 'Chat', value: 'chat', icon: MessageSquareText }
+				{ label: 'Hide', value: 'reset', icon: EyeOff },
+				{ label: 'Chat', value: 'tchat', icon: MessageSquareText }
 			]
 		},
 		{
 			id: 'top',
 			label: 'Top',
 			options: [
-				{ label: 'Hide', value: 'hide', icon: EyeOff },
+				{ label: 'Hide', value: 'reset', icon: EyeOff },
 				{ label: 'Countdown', value: 'countdown', icon: Timer }
 			]
 		}
 	];
+
+	function callAPI(configId: string, value: string) {
+		let url = $lightApiUrl;
+		if(['main','secondary'].includes(configId)){
+			url += `/camera/${configId}/${value}`;
+		} else {
+			url += `/overlay/${configId}/${value}`;
+		}
+		fetch(url);
+	}
 </script>
 
 <div class="card">
 	<h2>Overlays</h2>
 	<div class="grid">
 		{#each configs as config}
-			{@const proxy = {
-				get value() {
-					return overlayStates[config.id as keyof typeof overlayStates];
-				},
-				set value(v) {
-					overlayStates[config.id as keyof typeof overlayStates] = v;
-				}
-			}}
-
 			<div class="control-card">
 				<span class="control-label">{config.label}</span>
 
-				<SegmentedToggle options={config.options} bind:value={proxy.value} />
+				<SegmentedToggle
+					options={config.options}
+					value={overlayStates[config.id as keyof typeof overlayStates]}
+					onChange={(value) => {
+						callAPI(config.id, value);
+					}}
+				/>
 			</div>
 		{/each}
 	</div>
 </div>
 
 <style>
-  .card {
-    width: 100%;
-  }
+	.card {
+		width: 100%;
+	}
 	.grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
@@ -126,11 +133,11 @@
 		gap: 5px;
 	}
 
-  .control-label {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #a5a5b5;
-    font-family: sans-serif;
-    text-transform: uppercase;
-  }
+	.control-label {
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: #a5a5b5;
+		font-family: sans-serif;
+		text-transform: uppercase;
+	}
 </style>

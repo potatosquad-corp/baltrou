@@ -25,6 +25,7 @@
 		position: relative;
 		padding: 1rem;
 		margin: 0;
+		max-width: 1000px;
 	}
 	.close-button {
 		position: absolute;
@@ -46,5 +47,6 @@
 
 	.pinned-message .message {
 		font-family: 'Inter', sans-serif;
+		word-wrap: break-word;
 	}
 </style>
