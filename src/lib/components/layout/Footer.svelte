@@ -1,9 +1,9 @@
 <script lang="ts">
-	import EyeIcon from './icons/EyeIcon.svelte';
-	import GemIcon from './icons/GemIcon.svelte';
-	import StarIcon from './icons/StarIcon.svelte';
-	import UserIcon from './icons/UserIcon.svelte';
-	import LiveStatus from './LiveStatus.svelte';
+	import EyeIcon from '../icons/EyeIcon.svelte';
+	import GemIcon from '../icons/GemIcon.svelte';
+	import StarIcon from '../icons/StarIcon.svelte';
+	import UserIcon from '../icons/UserIcon.svelte';
+	import LiveStatus from '../LiveStatus.svelte';
 	import { stats } from '$lib/stores/stats-store';
 	import { version } from '$app/environment';
 	export let isLoggedIn: Boolean;

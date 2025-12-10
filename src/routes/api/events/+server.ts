@@ -13,6 +13,7 @@ export async function GET({ cookies }) {
 	}
 
 	const channel = `event:${user.id}`;
+	let interval: NodeJS.Timeout; 
 	let handler: (message: unknown) => void;
 
 	const stream = new ReadableStream({
@@ -21,6 +22,9 @@ export async function GET({ cookies }) {
 				const sseMessage = `data: ${JSON.stringify(message)}\n\n`;
 				controller.enqueue(sseMessage);
 			};
+			interval = setInterval(() => {
+            controller.enqueue(': keepalive\n\n');
+        }, 30000);
 
 			eventBus.on(channel, handler);
 
@@ -34,6 +38,7 @@ export async function GET({ cookies }) {
 			console.log(`[SSE] User ${user.id} disconnected`);
 			eventBus.off(channel, handler);
 			await ircManager.partChannel(user.id, user.userLogin);
+			clearInterval(interval);
 		}
 	});
 

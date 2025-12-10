@@ -17,6 +17,7 @@ export function createAudioModule(client: ObsClient) {
 	async function toggleMute(uuid: string) {
 		if (!get(client.isConnected)) return;
 		try {
+			updateStoreItem(audioSources, uuid, (i) => ({ ...i, muted: !i.muted }));
 			const { inputMuted } = await client._client.call('ToggleInputMute', { inputUuid: uuid });
 			updateStoreItem(audioSources, uuid, (i) => ({ ...i, muted: inputMuted }));
 		} catch (err) {

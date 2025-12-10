@@ -1,7 +1,7 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
 	import DebugPanel from '$lib/components/debug/DebugPanel.svelte';
-	import Footer from '$lib/components/Footer.svelte';
+	import Footer from '$lib/components/layout/Footer.svelte';
 	import ToastContainer from '$lib/components/ToastContainer.svelte';
 	import { appMode, auth, timer } from '$lib/stores/user-store.js';
 	import { chat } from '$lib/stores/chat-store.js';

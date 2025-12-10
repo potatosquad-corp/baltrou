@@ -21,7 +21,6 @@ const initialState: TwitchStats = {
 const store = writable<TwitchStats>(initialState);
 
 events.subscribe((event: SseEvent | null) => {
-	console.log(event,event?.type === 'twitch_stats_update')
 	if (event && event.type === 'twitch_stats_update') {
 		const newStats = event.data as TwitchStats;
 

@@ -2,8 +2,8 @@
 	import LightbulbIcon from '$lib/components/icons/LightbulbIcon.svelte';
 	import MusicIcon from '$lib/components/icons/MusicIcon.svelte';
 	import ShortcutButton from '$lib/components/icons/ShortcutButton.svelte';
-	import VolumeUpIcon from '$lib/components/icons/VolumeIcon.svelte';
-	import { lightApiUrl } from '$lib/stores/lights-store';
+	import { Volume2 } from '@lucide/svelte';
+	import { lightApiUrl } from '$lib/stores/fiak-store';
 	import { soundboardStore, type Sound } from '$lib/stores/soundboard-store';
 
 	type Ambiance = {
@@ -40,7 +40,7 @@
 		ambiances.forEach((a) => (a.selected = false));
 		ambiance.selected = true;
 		const rgb = hexToRgb(ambiance.color);
-		$lightApiUrl
+		$lightApiUrl;
 		await fetch(`${$lightApiUrl}/color/${rgb[0]}/${rgb[1]}/${rgb[2]}/1`);
 	}
 
@@ -107,7 +107,7 @@
 	<div class="buttons-grid">
 		{#each $soundboardStore as sound (sound.id)}
 			<ShortcutButton on:click={() => playSound(sound)} name={sound.name}>
-				<VolumeUpIcon slot="icon" />
+				<Volume2 slot="icon" />
 			</ShortcutButton>
 		{/each}
 		{#if $soundboardStore.length == 0}

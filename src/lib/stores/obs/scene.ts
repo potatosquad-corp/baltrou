@@ -5,6 +5,7 @@ import { browser } from '$app/environment';
 export type Scene = {
 	uuid: string;
 	name: string;
+	previewImage: string;
 };
 
 export function createSceneModule(client: ObsClient) {
@@ -14,6 +15,8 @@ export function createSceneModule(client: ObsClient) {
 	async function switchScene(sceneUuid: string) {
 		if (!get(client.isConnected)) return;
 		try {
+			const scene = get(sceneList).find(s=>s.uuid == sceneUuid);
+			activeScene.set(scene);
 			await client._client.call('SetCurrentProgramScene', { sceneUuid });
 		} catch (err) {
 			console.error(`[OBS] Erreur SetCurrentProgramScene:`, err);
@@ -23,12 +26,21 @@ export function createSceneModule(client: ObsClient) {
 	async function hydrate() {
 		if (!get(client.isConnected)) return;
 		const { scenes, currentProgramSceneUuid } = await client._client.call('GetSceneList');
-		sceneList.set(
-			scenes.map((scene: any) => ({
-				name: scene.sceneName,
-				uuid: scene.sceneUuid
-			}))
-		);
+		const hydratedSceneList = scenes.map((scene: any) => ({
+			name: scene.sceneName,
+			uuid: scene.sceneUuid,
+			previewImage: ''
+		}));
+		for (const scene of hydratedSceneList) {
+			const {imageData} = await client._client.call('GetSourceScreenshot', {
+				sourceUuid: scene.uuid,
+				imageFormat: "png",
+				imageCompressionQuality: 100,
+				imageWidth: 300
+			})
+			scene.previewImage = imageData;
+		}
+		sceneList.set(hydratedSceneList);
 
 		const currentScene =
 			get(sceneList).find((scene) => scene.uuid == currentProgramSceneUuid) || undefined;
@@ -40,14 +52,15 @@ export function createSceneModule(client: ObsClient) {
 
 	if (browser) {
 		client._client.on('CurrentProgramSceneChanged', (scene) => {
-			activeScene.set({ name: scene.sceneName, uuid: scene.sceneUuid });
+			activeScene.set({ name: scene.sceneName, uuid: scene.sceneUuid, previewImage: '' });
 		});
 
 		client._client.on('SceneListChanged', (data) => {
 			sceneList.set(
 				data.scenes.map((scene: any) => ({
 					name: scene.sceneName,
-					uuid: scene.sceneUuid
+					uuid: scene.sceneUuid,
+					previewImage: ''
 				}))
 			);
 		});

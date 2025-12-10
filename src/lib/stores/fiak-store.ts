@@ -36,6 +36,8 @@ if (browser) {
 
 		// Si l'URL change, on réinitialise le statut de connexion
 		lightApiStatus.set('UNKNOWN');
+		if(url != '')
+		pingFiakAPI();
 	});
 }
 
@@ -44,7 +46,7 @@ if (browser) {
 /**
  * Teste la connexion à l'API en appelant [url]/api/ping
  */
-export async function pingLightApi() {
+export async function pingFiakAPI() {
 	const url = get(lightApiUrl);
 
 	if (!url || url.trim() === '') {

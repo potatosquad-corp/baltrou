@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { lightApiUrl, lightApiStatus, pingLightApi } from '$lib/stores/lights-store';
+	import { lightApiUrl, lightApiStatus, pingFiakAPI } from '$lib/stores/fiak-store';
 
 	// Classe CSS réactive pour le statut
 	$: statusClass = {
@@ -11,14 +11,14 @@
 </script>
 
 <div class=" card light-settings-container">
-	<h1>Connexion API Lumières</h1>
+	<h1>Connexion API F.I.A.K</h1>
 
 	<div class="status-box">
 		Statut <span class="status-text {statusClass}">{$lightApiStatus}</span>
 	</div>
 
 	<div class="form-group">
-		<label for="lights-url">URL de l'API</label>
+		<label for="lights-url">Hôte</label>
 		<input
 			id="lights-url"
 			type="text"
@@ -26,12 +26,11 @@
 			placeholder="http://192.168.1.10"
 		/>
 	</div>
-	<p>Format: http(s)://[domaine](:port)</p>
 
 	<div class="button-group">
 		<button
 			class="btn btn-primary"
-			on:click={pingLightApi}
+			on:click={pingFiakAPI}
 			disabled={$lightApiStatus === 'CONNECTING'}
 		>
 			Connecter

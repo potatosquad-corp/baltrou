@@ -1,6 +1,6 @@
 <script lang="ts">
 	import AppModeToggle from '$lib/components/AppModeToggle.svelte';
-	import LightSettings from '$lib/components/LightSettings.svelte';
+	import FiakSettings from '$lib/components/FiakSettings.svelte';
 	import ObsSettings from '$lib/components/ObsSettings.svelte';
 </script>
 
@@ -13,7 +13,7 @@
 	<AppModeToggle />
 </div>
 <ObsSettings />
-<LightSettings />
+<FiakSettings />
 
 <style>
 	.card {

@@ -30,9 +30,9 @@ function saveSettings(settings: ObsSettings) {
 async function connect() {
 	const settings = loadSettings();
 	const timeout = new Promise((_, reject) => {
-		setTimeout(() => reject({ code: 1000, message: 'Connexion timeout' }), 1000 * 50);
+		setTimeout(() => reject({ code: 1000, message: 'Connexion timeout' }), 1000 * 20);
 	});
-	if (!settings) {
+	if (!settings || settings.host == '' || settings.room == '') {
 		status.set(ConnectionStatus.ERROR);
 		return;
 	}
@@ -82,7 +82,7 @@ export type ObsClient = {
 	disconnect: () => Promise<void>;
 };
 
-export function createObsClient() {
+export function createObsClient(): ObsClient {
 	return {
 		_client: obsClient,
 		status: {
@@ -92,6 +92,6 @@ export function createObsClient() {
 		loadSettings,
 		saveSettings,
 		connect,
-		disconnect
+		disconnect,
 	};
 }
